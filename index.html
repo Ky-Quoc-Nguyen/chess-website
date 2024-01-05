@@ -5,11 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Peter's Chess Club</title>
+<title>Welcome to Peter's Chess Club</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1 class="welcome-title">Welcome to Peter's Chess Club</h1>
+    <header class="header">
+        <h1>Welcome to Peter's Chess Club</h1>
+      </header>
   <div class="container">
     <div class="text-column">
       <h2>We have taught more than 20+ children</h2>
@@ -22,7 +24,7 @@
   <div class="container">
     <div class="text-column">
       <h2>Accomplishments</h2>
-      <p>Peter has competed in many tournament in Asia and Europe... Details about how h taught his sons.</p>
+      <p>Peter has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
     </div>
     <div class="image-column">
         <img src="test2.jpg" alt="test image 2">
@@ -54,20 +56,37 @@ body {
   
   .image-column {
     flex-basis: 50%;
-
-   
   }
   
-  h1 {
-    color: #333;
-    font-size: 2rem;
-  }
+  .header {
+  background-image: url('chess1.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  text-align: center;
+  padding: 450px 0; 
+  color: white;
+  position: relative;
+}
+
+.header h1 {
+  font-family: 'Serif font', Times, serif;
+  font-size: 72px; 
+  margin: 0;
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  /* background: rgba(0, 0, 0, 0.5);  */
+  padding: 10px 20px; 
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  */
+  border-radius: 5px; 
+}
   
   p {
     color: #666;
   }
   
-  /* Add some responsive design */
   @media (max-width: 768px) {
     .container {
       flex-direction: column;
