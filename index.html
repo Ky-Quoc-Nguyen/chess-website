@@ -1,36 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple HTML Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter's Chess Club</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <header>
-        <h1>Welcome to My Simple Webpage</h1>
-    </header>
-
-    <section>
-        <h2>About Me</h2>
-        <p>This is a simple webpage created using HTML.</p>
-    </section>
-
-    <section>
-        <h2>My Hobbies</h2>
-        <ul>
-            <li>Soccer</li>
-            <li>Basketball</li>
-            <li>Coding</li>
-            <li>Reading</li>
-            <li>Running</li>
-            <li>Watching movies</li>
-        </ul>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 My Simple Webpage. All rights reserved.</p>
-    </footer>
-
+  <div class="container">
+    <div class="text-column">
+      <h1>We have taught more than 20+ children</h1>
+      <p>Peter's chess club is a completely chess club for children. Led by Cuong (Peter) Nguyen, who is a certified coach, ex-professional player from the Vietnam National chess team. Peter started this chess club out of passion and it is completely free! His dream is to assemble a bunch of kids who are passionate about chess to compete.</p>
+    </div>
+    <div class="image-column">
+      <!-- image for later -->
+    </div>
+  </div>
 </body>
 </html>
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  .text-column {
+    flex-basis: 50%;
+  }
+  
+  .image-column {
+    flex-basis: 50%;
+    /* You can uncomment and add your image here as a background
+    background-image: url('your-image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    */
+  }
+  
+  h1 {
+    color: #333;
+    font-size: 2rem;
+  }
+  
+  p {
+    color: #666;
+  }
+  
+  /* Add some responsive design */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .text-column,
+    .image-column {
+      flex-basis: 100%;
+    }
+  }
