@@ -20,21 +20,21 @@
 
   <section id="home" class="page">
     <header class="header">
-      <h1>Welcome to Peter's Chess Club</h1>
+     <h1>Welcome to </h1>  <!-- dont add the name other wise dad will see it when he walks into the room -->
     </header>
-      <div class="container">
+    <div class="container">
       <div class="text-column">
-      <h2>We have taught more than 20+ children</h2>
-      <p>Peter's chess club is a completely chess club for children. Led by Cuong (Peter) Nguyen, who is a certified coach, ex-professional player from the Vietnam National chess team. Peter started this chess club out of passion and it is completely free! His dream is to assemble a bunch of kids who are passionate about chess to compete.</p>
-    </div>
+        <h2>We have taught more than 20+ children</h2>
+        <p>X's chess club is a completely chess club for children. Led by Cuong (Peter) Nguyen, who is a certified coach, ex-professional player from the Vietnam National chess team. Peter started this chess club out of passion and it is completely free! His dream is to assemble a bunch of kids who are passionate about chess to compete.</p>
+      </div>
     <div class="image-column">
         <img src="test1.jpg" alt="test image 1">
     </div>
-  </div>
+    </div>
   <div class="container">
     <div class="text-column">
       <h2>Accomplishments</h2>
-      <p>Peter has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
+      <p>X has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
     </div>
     <div class="image-column">
         <img src="test2.jpg" alt="test image 2">
@@ -43,7 +43,15 @@
   </section>
 
   <section id="about" class="page" style="display:none;">
-      <!-- Content for About -->
+    <div class="container">
+      <div class="image-column">
+        <img src="test3.png" alt="test image 3">
+      </div>
+      <div class="text-column">
+        <h2>About X</h2>
+        <p>X has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
+      </div>
+    </div>
   </section>
 
   <section id="gallery" class="page" style="display:none;">
@@ -91,7 +99,7 @@ body {
   background-attachment: fixed; 
   text-align: center;
   padding: 450px 0; 
-  color: white;
+  color: #F5F5F7;
   position: relative;
 }
 
@@ -109,9 +117,14 @@ body {
   border-radius: 5px; 
 }
   
-  p {
-    color: #666;
-  }
+p {
+  color: #666;
+  font-size: 30px; 
+}
+
+h2 {
+  font-size: 50px; /* Sets the font size for all <h2> tags */
+}
   
   @media (max-width: 768px) {
     .container {
@@ -123,7 +136,7 @@ body {
     }
   }
 
-  .welcome-title {
+.welcome-title {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -154,7 +167,7 @@ body {
 .navbar li a {
     font-family: 'Serif font', Times, serif;
     display: block; 
-    color: white !important; 
+    color: #F5F5F7;
     text-align: center;
     font-size: 25px;
     padding: 14px 16px;
@@ -163,7 +176,7 @@ body {
 
 
 .navbar li a:hover {
-    background-color: #ddd;
+    background-color: #F5F5F7;
     color: black;
 }
 
@@ -174,7 +187,7 @@ body {
     text-align: center;
     padding: 450px 0; 
     margin-top: 50px; 
-    color: white;
+    color: #F5F5F7;
     position: relative; 
 }
 
@@ -196,16 +209,11 @@ body {
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default anchor behavior
-
+            e.preventDefault(); 
             const page = document.querySelector('#' + this.dataset.page);
-            
-            // Hide all pages
             pages.forEach(page => {
                 page.style.display = 'none';
             });
-
-            // Show the clicked page
             page.style.display = 'block';
         });
     });
