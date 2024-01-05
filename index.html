@@ -10,8 +10,16 @@
 </head>
 <body>
     <header class="header">
+        <nav class="navbar">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
         <h1>Welcome to Peter's Chess Club</h1>
-      </header>
+    </header>
   <div class="container">
     <div class="text-column">
       <h2>We have taught more than 20+ children</h2>
@@ -101,5 +109,64 @@ body {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.navbar {
+    background-color: #333232;
+    overflow: hidden;
+    width: 100%;
+    top: 0;
+    position: fixed; 
+    z-index: 1000; 
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; 
+    gap: 150px;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    font-family: 'Serif font', Times, serif;
+    display: block; 
+    color: white !important; 
+    text-align: center;
+    font-size: 25px;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+
+.navbar li a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.header {
+    background-image: url('chess1.jpeg');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    padding: 450px 0; 
+    margin-top: 50px; 
+    color: white;
+    position: relative; 
+}
+
+.header h1 {
+    font-family: 'Serif font', Times, serif;
+    font-size: 100px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>
