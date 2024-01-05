@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome to Peter's Chess Club</title>
-<link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <nav class="navbar">
@@ -15,9 +14,11 @@
         <li><a href="#" data-page="about">About</a></li>
         <li><a href="#" data-page="gallery">Gallery</a></li>
         <li><a href="#" data-page="contact">Contact</a></li>
+        <li><a href="#" data-page="login">Log In</a></li>
     </ul>
   </nav>
 
+  
   <section id="home" class="page">
     <header class="header">
      <h1>Welcome to </h1>  <!-- dont add the name other wise dad will see it when he walks into the room -->
@@ -62,8 +63,22 @@
       <!-- Content for Contact -->
   </section>
 
+  <section id="login" class="page" style="display:none;">
+    <div class="login-container">
+      <form id="loginForm">
+          <label for="username">Username:</label><br>
+          <input type="text" id="username" name="username" required><br>
 
-<script src="script.js"></script>
+          <label for="password">Password:</label><br>
+          <input type="password" id="password" name="password" required><br>
+
+          <input type="submit" value="Login" id="login-form-submit">
+      </form> 
+  </div>
+</section>
+
+
+
 </body>
 </html>
 
@@ -200,6 +215,59 @@ h2 {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* Log in information box css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    padding: 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #004494;
+}
+
 </style>
 
 <script>
@@ -217,5 +285,19 @@ h2 {
             page.style.display = 'block';
         });
     });
+});
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    if (username === "user" && password === "12345") {
+        
+        window.location.href = 'login.html'; // Redirect to the success page
+    } else {
+        alert("Login failed. Incorrect username or password.");
+    }
 });
 </script>
