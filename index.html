@@ -1,3 +1,5 @@
+<!-- Main html code -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,18 +9,31 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1 class="welcome-title">Welcome to Peter's Chess Club</h1>
   <div class="container">
     <div class="text-column">
-      <h1>We have taught more than 20+ children</h1>
+      <h2>We have taught more than 20+ children</h2>
       <p>Peter's chess club is a completely chess club for children. Led by Cuong (Peter) Nguyen, who is a certified coach, ex-professional player from the Vietnam National chess team. Peter started this chess club out of passion and it is completely free! His dream is to assemble a bunch of kids who are passionate about chess to compete.</p>
     </div>
     <div class="image-column">
-      <!-- image for later -->
+        <img src="test1.jpg" alt="test image 1">
+    </div>
+  </div>
+  <div class="container">
+    <div class="text-column">
+      <h2>Accomplishments</h2>
+      <p>Peter has competed in many tournament in Asia and Europe... Details about how h taught his sons.</p>
+    </div>
+    <div class="image-column">
+        <img src="test2.jpg" alt="test image 2">
     </div>
   </div>
 </body>
 </html>
 
+<!-- Below are the styling. Adjust it to your liking. Just google it and copy whatever you like -->
+
+<style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -39,12 +54,8 @@ body {
   
   .image-column {
     flex-basis: 50%;
-    /* You can uncomment and add your image here as a background
-    background-image: url('your-image.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 300px;
-    */
+
+   
   }
   
   h1 {
@@ -66,3 +77,10 @@ body {
       flex-basis: 100%;
     }
   }
+
+  .welcome-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+</style>
