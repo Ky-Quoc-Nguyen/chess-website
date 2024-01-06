@@ -61,6 +61,26 @@
 
   <section id="contact" class="page" style="display:none;">
       <!-- Content for Contact -->
+
+      <div class="contact-container">
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-left">
+          <div class="contact-left-title">
+            <h2>Get in touch</h2>
+            <hr>
+            
+
+          </div>
+          <input type="hidden" name="access_key" value="da1709d9-f9b3-47d8-82a3-a62b4b944aaa">
+          <input type="name" name="name" placeholder="Your name" class="contacts-inputs-name" required>
+          <input type="email" name="email" placeholder="Your email" class="contacts-inputs-email" required>
+          <textarea name="message" placeholder="Your message" class="contacts-inputs-message" required></textarea>
+          <button type="submit">Submit</button>
+
+
+        </form>
+
+
+      </div>
   </section>
 
   <section id="login" class="page">
@@ -303,6 +323,111 @@ input[type="submit"]:hover {
 
 #home { /* Or whichever section you want to show first */
     display: block;
+}
+
+/*css for contact tab*/
+body{
+  font-family: 'Outfit';
+  background: linear-gradient();
+}
+
+/*css for contact container class*/
+.contact-container{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contact-left{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+
+.contact-left-title h2{
+  font-weight: 1000;
+  color: hsl(from color h s l);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: inherit;
+  margin-bottom: 5px;
+}
+
+.contact-left-title hr{
+  border: none;
+  width: 120px;
+  height: 5px;
+  background-color: hsl(hue, saturation, lightness);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+
+.contact-left textarea{
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 20px;
+}
+
+.contacts-inputs-name{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+
+
+
+}
+
+.contacts-inputs-email{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+.contacts-inputs-message{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+
+.contact-left button{
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: white;
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, rgb(7, 190, 166),rgb(97, 79, 184));
+  cursor: pointer;
+}
+
+@media (max-width:800px){
+  .contact-inputs{
+    width: 80vw;
+  }
+
+  .contact-right{
+    display:none;
+  }
 }
 
 </style>
