@@ -63,31 +63,32 @@
       <!-- Content for Contact -->
   </section>
 
-  <section id="login" class="page" style="display:none;">
+  <section id="login" class="page">
     <div class="login-container">
-      <form id="loginForm">
-          <label for="username">Username:</label><br>
-          <input type="text" id="username" name="username" required><br>
+        <!-- Login Form -->
+        <form id="loginForm">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
 
-          <label for="password">Password:</label><br>
-          <input type="password" id="password" name="password" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
 
-          <input type="submit" value="Login" id="login-form-submit">
-          <p class="new-user">New User? <a href="#" onclick="showRegistrationForm()">Register here</a></p>
-      </form> 
-      <form id="registrationForm" style="display:none;">
-        <label for="newUsername">Username:</label><br>
-        <input type="text" id="newUsername" name="newUsername" required><br>
+            <input type="submit" value="Login">
+            <p class="new-user">New User? <a href="#" onclick="showRegistrationForm()">Register here</a></p>
+        </form>
 
-        <label for="newPassword">Password:</label><br>
-        <input type="password" id="newPassword" name="newPassword" required><br>
+        <!-- Registration Form -->
+        <form action="http://localhost:3000/register" method="post" id="registrationForm" style="display:none;">
+          <label for="newUsername">Username:</label><br>
+          <input type="text" id="newUsername" name="username" required><br>
 
-        <input type="submit" value="Register">
-    </form>
-  </div>
+          <label for="newPassword">Password:</label><br>
+          <input type="password" id="newPassword" name="password" required><br>
+
+          <input type="submit" value="Register">
+        </form>
+    </div>
 </section>
-
-
 
 </body>
 </html>
@@ -265,6 +266,10 @@ input[type="password"] {
     border-radius: 4px;
 }
 
+#login {
+    display: none;
+}
+
 input[type="submit"] {
     padding: 10px;
     background-color: #0056b3;
@@ -327,7 +332,20 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 });
 
 function showRegistrationForm() {
-            document.getElementById('loginForm').style.display = 'none';  // Hide login form
-            document.getElementById('registrationForm').style.display = 'block'; // Show registration form
-        }
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registrationForm').style.display = 'block';
+}
+
+function handleRegistration(event) {
+    event.preventDefault(); 
+
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('newPassword').value;
+    console.log('Registered:', username, password); 
+
+    document.getElementById('registrationForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+}
+
+
 </script>
