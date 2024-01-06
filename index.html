@@ -10,12 +10,12 @@
 <body>
   <nav class="navbar">
     <ul>
-        <li><a href="#" data-page="home">Home</a></li>
-        <li><a href="#" data-page="about">About</a></li>
-        <li><a href="#" data-page="gallery">Gallery</a></li>
-        <li><a href="#" data-page="contact">Contact</a></li>
-        <li><a href="#" data-page="login">Log In</a></li>
-    </ul>
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" onclick="showPage('gallery')">Gallery</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+      <li><a href="#" onclick="showPage('login')">Log In</a></li>
+  </ul>
   </nav>
 
   
@@ -297,25 +297,32 @@ input[type="submit"]:hover {
 .new-user a:hover {
     text-decoration: underline;
 }
+.page {
+    display: none;
+}
+
+#home { /* Or whichever section you want to show first */
+    display: block;
+}
 
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const navLinks = document.querySelectorAll('.navbar a');
-    const pages = document.querySelectorAll('.page');
+//   document.addEventListener('DOMContentLoaded', (event) => {
+//     const navLinks = document.querySelectorAll('.navbar a');
+//     const pages = document.querySelectorAll('.page');
 
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            const page = document.querySelector('#' + this.dataset.page);
-            pages.forEach(page => {
-                page.style.display = 'none';
-            });
-            page.style.display = 'block';
-        });
-    });
-});
+//     navLinks.forEach(link => {
+//         link.addEventListener('click', function(e) {
+//             e.preventDefault(); 
+//             const page = document.querySelector('#' + this.dataset.page);
+//             pages.forEach(page => {
+//                 page.style.display = 'none';
+//             });
+//             page.style.display = 'block';
+//         });
+//     });
+// });
 
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -325,7 +332,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
 
     if (username === "user" && password === "12345") {
         
-        window.location.href = 'login.html'; // Redirect to the success page
+        window.location.href = 'index.html'; // Redirect to the success page
     } else {
         alert("Login failed. Incorrect username or password.");
     }
@@ -346,6 +353,22 @@ function handleRegistration(event) {
     document.getElementById('registrationForm').style.display = 'none';
     document.getElementById('loginForm').style.display = 'block';
 }
+
+function showPage(pageId) {
+    console.log('Showing page:', pageId); // Debug: Log the pageId being passed
+
+    const selectedPage = document.getElementById(pageId);
+    if (selectedPage) {
+        document.querySelectorAll('.page').forEach(page => {
+            page.style.display = 'none';
+        });
+        selectedPage.style.display = 'block';
+    } else {
+        console.error('No page found with ID:', pageId);
+    }
+}
+
+
 
 
 </script>

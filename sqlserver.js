@@ -28,8 +28,7 @@ app.post('/register', (req, res) => {
             console.error('Database error:', err);
             res.status(500).send('Error registering new user');
         } else {
-            // Send a success response
-            res.json({ success: true, message: 'Registration successful' });
+            res.redirect('http://127.0.0.1:5500/index.html#')
         }
     });
 });
