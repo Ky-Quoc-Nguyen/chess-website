@@ -73,7 +73,17 @@
           <input type="password" id="password" name="password" required><br>
 
           <input type="submit" value="Login" id="login-form-submit">
+          <p class="new-user">New User? <a href="#" onclick="showRegistrationForm()">Register here</a></p>
       </form> 
+      <form id="registrationForm" style="display:none;">
+        <label for="newUsername">Username:</label><br>
+        <input type="text" id="newUsername" name="newUsername" required><br>
+
+        <label for="newPassword">Password:</label><br>
+        <input type="password" id="newPassword" name="newPassword" required><br>
+
+        <input type="submit" value="Register">
+    </form>
   </div>
 </section>
 
@@ -134,7 +144,7 @@ body {
   
 p {
   color: #666;
-  font-size: 30px; 
+  font-size: 20px; 
 }
 
 h2 {
@@ -158,12 +168,13 @@ h2 {
 }
 
 .navbar {
-    background-color: #333232;
+    background-color: #121212;
     overflow: hidden;
     width: 100%;
     top: 0;
     position: fixed; 
     z-index: 1000; 
+    height: 60px;
 }
 
 .navbar ul {
@@ -182,7 +193,7 @@ h2 {
 .navbar li a {
     font-family: 'Serif font', Times, serif;
     display: block; 
-    color: #F5F5F7;
+    color: #a0a0a0;
     text-align: center;
     font-size: 25px;
     padding: 14px 16px;
@@ -268,6 +279,20 @@ input[type="submit"]:hover {
     background-color: #004494;
 }
 
+.new-user {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.new-user a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.new-user a:hover {
+    text-decoration: underline;
+}
+
 </style>
 
 <script>
@@ -300,4 +325,9 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         alert("Login failed. Incorrect username or password.");
     }
 });
+
+function showRegistrationForm() {
+            document.getElementById('loginForm').style.display = 'none';  // Hide login form
+            document.getElementById('registrationForm').style.display = 'block'; // Show registration form
+        }
 </script>
