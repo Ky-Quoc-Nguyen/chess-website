@@ -3,6 +3,11 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const app = express();
 
+const cors = require('cors');
+app.use(cors());
+app.use(express.json());
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = mysql.createConnection({
@@ -32,6 +37,31 @@ app.post('/register', (req, res) => {
         }
     });
 });
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    console.log("Received credentials:", username, password);
+
+    const sql = "SELECT * FROM users WHERE username = ?";
+    db.query(sql, [username], (err, results) => {
+        console.log("Database query results:", results);
+        if (err) {
+            console.error('Database error:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+
+        if (results.length > 0) {
+            if (results[0].password === password) {
+                res.json({ success: true, message: 'Login successful' });
+            } else {
+                res.json({ success: false, message: 'Invalid username or password' });
+            }
+        } else {
+            res.json({ success: false, message: 'Invalid username or password' });
+        }
+    });
+});
+
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');

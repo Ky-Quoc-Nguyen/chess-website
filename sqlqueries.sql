@@ -7,5 +7,5 @@
 --     password VARCHAR(255) NOT NULL
 -- );
 
-USE chessClubDB;
-INSERT INTO users (username, password) VALUES ('yeet', '21312');
+DELETE FROM users;
+
