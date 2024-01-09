@@ -435,22 +435,6 @@ body{
 <!-- below are the script to this html -->
 
 <script>
-//   document.addEventListener('DOMContentLoaded', (event) => {
-//     const navLinks = document.querySelectorAll('.navbar a');
-//     const pages = document.querySelectorAll('.page');
-
-//     navLinks.forEach(link => {
-//         link.addEventListener('click', function(e) {
-//             e.preventDefault(); 
-//             const page = document.querySelector('#' + this.dataset.page);
-//             pages.forEach(page => {
-//                 page.style.display = 'none';
-//             });
-//             page.style.display = 'block';
-//         });
-//     });
-// });
-
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -494,8 +478,4 @@ function showPage(pageId) {
         console.error('No page found with ID:', pageId);
     }
 }
-
-
-
-
 </script>
