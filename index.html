@@ -452,7 +452,7 @@ function handleRegistration(event) {
 }
 
 function showPage(pageId) {
-    console.log('Showing page:', pageId); // Debug: Log the pageId being passed
+    console.log('Showing page:', pageId); 
 
     const selectedPage = document.getElementById(pageId);
     if (selectedPage) {
@@ -479,8 +479,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
-                // Redirect or update the page after successful login
+               window.location.href = 'login.html'; 
             } else {
                 alert(data.message);
             }
