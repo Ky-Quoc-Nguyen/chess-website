@@ -1,9 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Successful Login</title>
 </head>
 <body>
-    <h1>Welcome, you have successfully logged in!</h1>
+    <div id="userPanel" class="user-panel">
+        <span id="usernameDisplay">Hello, <span id="username"></span></span>
+        <button class = "signout" id="signOutButton">Sign Out</button>
+    </div>
 </body>
 </html>
+
+<style>
+    .user-panel {
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+}
+
+/* CSS */
+.signout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 30px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+  border-radius: 6px;
+  border: none;
+
+  background: #6E6D70;
+  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
+  color: #DFDEDF;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.signout:focus {
+  box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
+  outline: 0;
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const username = sessionStorage.getItem('username');
+        console.log('Retrieved username:', username);  
+
+        if (username) {
+            document.getElementById('username').textContent = username;
+        } else {
+            window.location.href = 'index.html'; 
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginbutton = document.getElementById('signOutButton')
+        if (loginbutton) {
+            loginbutton.addEventListener('click', () =>{
+                sessionStorage.clear();
+                window.location.href = 'index.html'; 
+            });
+        } 
+    });
+</script>

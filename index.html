@@ -65,7 +65,7 @@
       <div class="contact-container">
         <form action="https://api.web3forms.com/submit" method="POST" class="contact-left">
           <div class="contact-left-title">
-            <h2>Get in touch</h2>
+            <h2>Get In Touch</h2>
             <hr>
             
 
@@ -412,11 +412,11 @@ body{
   align-items: center;
   padding: 15px 30px;
   font-size: 16px;
-  color: white;
+  color: rgb(255, 255, 255);
   gap: 10px;
   border: none;
   border-radius: 50px;
-  background: linear-gradient(270deg, rgb(7, 190, 166),rgb(97, 79, 184));
+  background: linear-gradient(270deg, rgb(71, 71, 71),rgb(116, 116, 116));
   cursor: pointer;
 }
 
@@ -479,7 +479,8 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-               window.location.href = 'login.html'; 
+              sessionStorage.setItem('username', data.username);
+              window.location.href = 'login.html'; 
             } else {
                 alert(data.message);
             }
