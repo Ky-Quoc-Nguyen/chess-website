@@ -1,66 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-</head>
-<body>
+  <head> </head>
+  <body>
     <div id="userPanel" class="user-panel">
-        <span id="usernameDisplay">Hello, <span id="username"></span></span>
-        <button class = "signout" id="signOutButton">Sign Out</button>
+      <span id="usernameDisplay">Hello, <span id="username"></span></span>
+      <button class="signout" id="signOutButton">Sign Out</button>
     </div>
-</body>
+  </body>
 </html>
 
 <style>
-    .user-panel {
+  .user-panel {
     position: fixed;
     top: 10px;
     right: 20px;
     font-size: 30px;
-}
+  }
 
-/* CSS */
-.signout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 6px 30px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
-  border-radius: 6px;
-  border: none;
+  .signout {
+    appearance: button;
+    background-color: #000;
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-family: ITCAvantGardeStd-Bk, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 5px 10px 0;
+    overflow: visible;
+    padding: 12px 40px;
+    text-align: center;
+    text-transform: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
 
-  background: #6E6D70;
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1), inset 0px 0.5px 0.5px rgba(255, 255, 255, 0.5), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.12);
-  color: #DFDEDF;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
+  .signout:focus {
+    text-decoration: none;
+  }
 
-.signout:focus {
-  box-shadow: inset 0px 0.8px 0px -0.25px rgba(255, 255, 255, 0.2), 0px 0.5px 1px rgba(0, 0, 0, 0.1), 0px 0px 0px 3.5px rgba(58, 108, 217, 0.5);
-  outline: 0;
-}
+  .signout:hover {
+    text-decoration: none;
+  }
+
+  .signout:active {
+    box-shadow: rgba(0, 0, 0, 0.125) 0 3px 5px inset;
+    outline: 0;
+  }
+
+  .signout:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+  }
+
+  @media (min-width: 768px) {
+    .signout {
+      padding: 12px 50px;
+    }
+  }
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const username = sessionStorage.getItem('username');
-        console.log('Retrieved username:', username);  
+  document.addEventListener("DOMContentLoaded", () => {
+    const username = sessionStorage.getItem("username");
+    console.log("Retrieved username:", username);
 
-        if (username) {
-            document.getElementById('username').textContent = username;
-        } else {
-            window.location.href = 'index.html'; 
-        }
-    });
+    if (username) {
+      document.getElementById("username").textContent = username;
+    } else {
+      window.location.href = "index.html";
+    }
+  });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const loginbutton = document.getElementById('signOutButton')
-        if (loginbutton) {
-            loginbutton.addEventListener('click', () =>{
-                sessionStorage.clear();
-                window.location.href = 'index.html'; 
-            });
-        } 
-    });
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginbutton = document.getElementById("signOutButton");
+    if (loginbutton) {
+      loginbutton.addEventListener("click", () => {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+      });
+    }
+  });
 </script>
