@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head> </head>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+  </head>
   <body>
     <div id="userPanel" class="user-panel">
       <span id="usernameDisplay">Hello, <span id="username"></span> ! </span>
@@ -131,14 +136,25 @@
 
   function displayPosts(posts) {
     const postsContainer = document.getElementById("postsContainer");
-    postsContainer.innerHTML = ""; 
+    postsContainer.innerHTML = "";
 
     posts.forEach((post) => {
       const postDiv = document.createElement("div");
       postDiv.className = "post";
+      postDiv.style.position = "relative"; 
       postDiv.onclick = function () {
         openModal(post);
-      }; 
+      };
+
+      const deleteIcon = document.createElement("span");
+      deleteIcon.className = "delete-icon fas fa-trash";
+      // deleteIcon.innerHTML = "&#10006;"; // Unicode for a simple 'X' symbol
+      deleteIcon.onclick = function (e) {
+        e.stopPropagation(); // Prevents opening the modal
+        if (confirm("Are you sure you want to delete this post?")) {
+          deletePost(post.id);
+        }
+      };
 
       const author = document.createElement("p");
       author.className = "post-author";
@@ -151,6 +167,10 @@
       const content = document.createElement("p");
       content.className = "post-content";
       content.textContent = post.content;
+
+      if (sessionStorage.getItem("username") === post.author) {
+        postDiv.appendChild(deleteIcon);
+      }
 
       postDiv.appendChild(author);
       postDiv.appendChild(title);
@@ -240,7 +260,7 @@
       .then((response) => response.json())
       .then((comments) => {
         const commentsList = document.getElementById("commentsList");
-        commentsList.innerHTML = ""; 
+        commentsList.innerHTML = "";
         comments.forEach((comment) => {
           const commentDiv = document.createElement("div");
           commentDiv.textContent = `${comment.author}: ${comment.content}`;
@@ -250,6 +270,22 @@
       .catch((error) => console.error("Error fetching comments:", error));
   }
 
+  function deletePost(postId) {
+    fetch(`http://localhost:3000/deletePost/${postId}`, { method: "DELETE" })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Problem deleting post");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Post deleted:", data);
+        fetchAndDisplayPosts();
+      })
+      .catch((error) => {
+        console.error("Error deleting post:", error);
+      });
+  }
 
   var span = document.getElementsByClassName("close")[0];
 
@@ -427,6 +463,8 @@
     word-wrap: break-word; /* Ensures the text breaks to prevent horizontal overflow */
     cursor: pointer; /* Changes the cursor to indicate the post is clickable */
     transition: border-color 0.3s;
+    position: relative; /* Add this line if not already present */
+
   }
 
   .post:hover {
@@ -553,4 +591,13 @@
     box-shadow: #d6d6e7 0 3px 7px inset;
     transform: translateY(2px);
   }
+
+  .delete-icon {
+  position: absolute;
+  top: 10px; 
+  right: 10px;
+  cursor: pointer;
+  padding: 5px ;
+}
+
 </style>

@@ -7,7 +7,8 @@
 --     password VARCHAR(255) NOT NULL
 -- );
 
--- DELETE FROM users;
+DELETE FROM posts;
+DELETE FROM comments;
 
 
 -- USE chessClubDB;
@@ -33,4 +34,4 @@
 
 -- INSERT INTO comments (post_id, author, content) VALUES (20, 'Peter', 'bro this shit is so lit');
 
-INSERT INTO comments (post_id, author, content) VALUES (20, 'CommentAuthor', 'Comment content here');
+-- INSERT INTO comments (post_id, author, content) VALUES (20, 'CommentAuthor', 'Comment content here');

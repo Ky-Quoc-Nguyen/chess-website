@@ -116,6 +116,22 @@ app.post('/postComment', (req, res) => {
   });
 });
 
+app.delete('/deletePost/:postId', (req, res) => {
+  const postId = req.params.postId;
+  const username = req.body.username; // Or however you manage authentication
+
+  // You should check if the user is the author of the post here
+  const sql = 'DELETE FROM posts WHERE id = ?';
+  db.query(sql, [postId], (err, result) => {
+      if (err) {
+          console.error('Error deleting post:', err);
+          res.status(500).send('Error deleting post');
+      } else {
+          res.send('Post deleted successfully');
+      }
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
