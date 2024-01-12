@@ -3,13 +3,19 @@
   <head>
     <link
       rel="stylesheet"
+      .commentcomment
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
   </head>
   <body>
+    <!-- userPanel -->
     <div id="userPanel" class="user-panel">
-      <span id="usernameDisplay">Hello, <span id="username"></span> ! </span>
-      <button class="signout" id="signOutButton">Sign Out</button>
+      <div class="dropdown">
+        <button class="dropbtn">Hello, <span id="username"></span> &nbsp; &nbsp; <i class="fa fa-caret-down"></i></button>
+        <div class="dropdown-content" id="myDropdown">
+          <a href="#" id="signOutButton">Sign Out</a>
+        </div>
+      </div>
     </div>
 
     <button class="signout" id="createPostButton">Create Post</button>
@@ -24,8 +30,10 @@
           <label for="postBody">Body:</label>
           <textarea id="postBody" name="postBody" required></textarea>
         </div>
-        <button type="submit">Submit Post</button>
-        <button type="button" onclick="closeForm()">Cancel</button>
+        <button class="button-30" type="submit">Submit Post</button>
+        <button class="button-30" type="button" onclick="closeForm()">
+          Cancel
+        </button>
       </form>
     </div>
 
@@ -71,6 +79,23 @@
     } else {
       window.location.href = "index.html";
     }
+
+    document.querySelector(".dropbtn").addEventListener("click", function () {
+      document.getElementById("myDropdown").classList.toggle("show");
+    });
+
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function (event) {
+      if (!event.target.matches(".dropbtn")) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains("show")) {
+            openDropdown.classList.remove("show");
+          }
+        }
+      }
+    };
   });
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -138,7 +163,7 @@
     const postsContainer = document.getElementById("postsContainer");
     postsContainer.innerHTML = "";
 
-    posts.forEach((post) => {
+    posts.reverse().forEach((post) => {
       const postDiv = document.createElement("div");
       postDiv.className = "post";
       postDiv.style.position = "relative";
@@ -155,7 +180,6 @@
         }
       };
 
-
       const timeElement = document.createElement("p");
       timeElement.className = "post-time";
       const createdAtDate = new Date(post.created_at);
@@ -163,7 +187,9 @@
       time.className = "post-time";
       const author = document.createElement("p");
       author.className = "post-author";
-      author.textContent = `Posted by ${post.author} ${timeSince(createdAtDate)} ago`;
+      author.textContent = `Posted by ${post.author} ${timeSince(
+        createdAtDate
+      )} ago`;
 
       const title = document.createElement("h2");
       title.className = "post-title";
@@ -212,18 +238,27 @@
 
     document.getElementById("postModal").style.display = "block";
 
-    // Fetch and display comments for this post
-    // fetchCommentsForPost(post.id);
-    //console.log(post.id);
     // Fetch and display comments for the post
     fetch(`http://localhost:3000/getComments/${post.id}`)
       .then((response) => response.json())
       .then((comments) => {
         const commentsList = document.getElementById("commentsList");
-        commentsList.innerHTML = ""; // Clear existing comments
+        commentsList.innerHTML = "";
         comments.forEach((comment) => {
           const commentDiv = document.createElement("div");
-          commentDiv.textContent = `${comment.author}: ${comment.content}`;
+          commentDiv.className = "comment";
+
+          const authorSpan = document.createElement("span");
+          authorSpan.className = "comment-author";
+          authorSpan.textContent = comment.author + " ";
+
+          const contentSpan = document.createElement("span");
+          contentSpan.className = "comment-content";
+          contentSpan.textContent = comment.content;
+
+          commentDiv.appendChild(authorSpan);
+          commentDiv.appendChild(contentSpan);
+
           commentsList.appendChild(commentDiv);
         });
       })
@@ -269,7 +304,19 @@
         commentsList.innerHTML = "";
         comments.forEach((comment) => {
           const commentDiv = document.createElement("div");
-          commentDiv.textContent = `${comment.author}: ${comment.content}`;
+          commentDiv.className = "comment"; // Add this class
+
+          const authorSpan = document.createElement("span");
+          authorSpan.className = "comment-author"; // Add this class
+          authorSpan.textContent = comment.author + " ";
+
+          const contentSpan = document.createElement("span");
+          contentSpan.className = "comment-content"; // Add this class
+          contentSpan.textContent = comment.content;
+
+          commentDiv.appendChild(authorSpan);
+          commentDiv.appendChild(contentSpan);
+
           commentsList.appendChild(commentDiv);
         });
       })
@@ -341,6 +388,8 @@
     font-size: 30px;
   }
 
+  /* fancy black button 1 styling */
+
   .signout {
     appearance: button;
     background-color: #000;
@@ -392,27 +441,6 @@
     }
   }
 
-  .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-  }
-
   .form-group {
     margin-bottom: 10px;
   }
@@ -453,6 +481,8 @@
     margin-bottom: 5px;
   }
 
+  /* post styling */
+
   #postsTable {
     width: 100%;
     border-collapse: collapse;
@@ -487,14 +517,14 @@
     padding: 8px;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 80%; /* Adjust the width as needed */
-    max-width: 800px; /* Adjust the maximum width as needed */
-    max-height: 300px; /* Maximum height for the post container */
-    overflow: auto; /* Add scroll bars if content overflows */
-    word-wrap: break-word; /* Ensures the text breaks to prevent horizontal overflow */
-    cursor: pointer; /* Changes the cursor to indicate the post is clickable */
+    width: 80%;
+    max-width: 800px;
+    max-height: 300px;
+    overflow: auto;
+    word-wrap: break-word;
+    cursor: pointer;
     transition: border-color 0.3s;
-    position: relative; /* Add this line if not already present */
+    position: relative;
   }
 
   .post:hover {
@@ -504,36 +534,59 @@
   .post-author,
   .post-title,
   .post-content {
-    margin: 0 0 8px 0; /* Add some space between the elements */
-    padding: 0 16px; /* Add some padding on the sides */
+    margin: 0 0 8px 0;
+    padding: 0 16px;
   }
 
-  /* You might also want to add some media queries to handle responsiveness on smaller screens */
   @media (max-width: 768px) {
     .post {
-      width: 90%; /* Posts take more width on smaller screens */
+      width: 90%;
     }
   }
 
-  .pmodal {
+  /* modal/comment pop up styling */
+
+  .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
+    width: 100%;
+    height: 100%;
     overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
   }
 
-  .pmodal-content {
+  .modal-content {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
+  }
+
+
+  .pmodal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .pmodal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
   }
 
   .close {
@@ -550,29 +603,7 @@
     cursor: pointer;
   }
 
-  #commentsSection {
-    margin-top: 20px;
-  }
-
-  #commentForm {
-    display: flex;
-    margin-bottom: 10px;
-  }
-
-  #commentInput {
-    flex-grow: 1;
-    margin-right: 10px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-  }
-
-  #commentsContainer {
-    max-height: 200px;
-    /* overflow-y: auto; scroll for overflow */
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-  }
+  /* Fancy button styling */
 
   .button-30 {
     align-items: center;
@@ -622,11 +653,130 @@
     transform: translateY(2px);
   }
 
+  /* Delete icon styling */
+
   .delete-icon {
     position: absolute;
     top: 10px;
     right: 10px;
     cursor: pointer;
     padding: 5px;
+  }
+
+  /* Comments styling */
+
+  .comment {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px; /* Rounded corners */
+    font-size: 0.9rem;
+  }
+
+  .comment-author {
+    font-size: 0.9em;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .comment-content {
+    font-size: 1.3em;
+    display: block;
+  }
+
+  /* #commentsList {
+   
+  } */
+
+  #newCommentForm {
+    margin-top: 15px;
+  }
+
+  #newCommentText {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  #commentsSection {
+    margin-top: 20px;
+  }
+
+  #commentForm {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  #commentInput {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  #commentsContainer {
+    max-height: 200px;
+    /* overflow-y: auto; scroll for overflow */
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+
+  /* drop down menu */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropbtn {
+  background-color: rgb(0, 0, 0);
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: black;
+  cursor: pointer;
+  border-radius: 7px; 
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.2); /* horizontal-offset vertical-offset blur-radius color */
+
+  /* height: 10%; */
+  /* width: 100%; */
+}
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 7px; 
+  }
+
+  .dropdown-content a {
+    color: #787878;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 7px; 
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+    border-radius: 7px; 
+  }
+
+  .dropdown:hover .dropbtn {
+    background-color: #9c9c9c;
+    border-radius: 7px; 
   }
 </style>
