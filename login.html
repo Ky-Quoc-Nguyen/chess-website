@@ -11,7 +11,10 @@
     <!-- userPanel -->
     <div id="userPanel" class="user-panel">
       <div class="dropdown">
-        <button class="dropbtn">Hello, <span id="username"></span> &nbsp; &nbsp; <i class="fa fa-caret-down"></i></button>
+        <button class="dropbtn">
+          Hello, <span id="username"></span> &nbsp; &nbsp;
+          <i class="fa fa-caret-down"></i>
+        </button>
         <div class="dropdown-content" id="myDropdown">
           <a href="#" id="signOutButton">Sign Out</a>
         </div>
@@ -35,6 +38,14 @@
           Cancel
         </button>
       </form>
+    </div>
+
+    <!-- Sorting Bar -->
+    <div id="sortingBar" class="sorting-bar">
+      <button id="sortByLikes" class="sort-button">Most Liked</button>
+      <button id="sortByRecent" class="sort-button sort-button-active">
+        Most Recent
+      </button>
     </div>
 
     <div id="postsContainer">
@@ -171,6 +182,39 @@
         openModal(post);
       };
 
+      const infoContainer = document.createElement("div");
+      infoContainer.className = "info-container";
+
+      // Voting container
+      const votingContainer = document.createElement("div");
+      votingContainer.className = "voting-container";
+
+      // Upvote button
+      const upvoteButton = document.createElement("button");
+      upvoteButton.className = "vote-button upvote";
+      upvoteButton.innerHTML = '&#8679;';
+      upvoteButton.onclick = function (e) {
+        e.stopPropagation(); // Prevent opening the modal when clicking on vote
+        // Upvote action here
+      };
+
+      // Downvote button
+      const downvoteButton = document.createElement("button");
+      downvoteButton.className = "vote-button downvote";
+      downvoteButton.innerHTML = '&#8681;';
+      downvoteButton.onclick = function (e) {
+        e.stopPropagation(); // Prevent opening the modal when clicking on vote
+        // Downvote action here
+      };
+
+      // Content container
+      const contentContainer = document.createElement("div");
+      contentContainer.className = "content-container";
+
+      // Append voting container to postDiv
+      postDiv.appendChild(votingContainer);
+
+      // trash can
       const deleteIcon = document.createElement("span");
       deleteIcon.className = "delete-icon fas fa-trash";
       deleteIcon.onclick = function (e) {
@@ -180,6 +224,16 @@
         }
       };
 
+      //post information
+      const title = document.createElement("h2");
+      title.className = "post-title";
+      // title.textContent = post.title;
+
+      const content = document.createElement("p");
+      content.className = "post-content";
+      // content.textContent = post.content;
+
+      //time posted
       const timeElement = document.createElement("p");
       timeElement.className = "post-time";
       const createdAtDate = new Date(post.created_at);
@@ -187,17 +241,13 @@
       time.className = "post-time";
       const author = document.createElement("p");
       author.className = "post-author";
-      author.textContent = `Posted by ${post.author} ${timeSince(
+      author.innerHTML = `<span class="post-time">Posted by ${
+        post.author
+      } ${timeSince(
         createdAtDate
-      )} ago`;
-
-      const title = document.createElement("h2");
-      title.className = "post-title";
-      title.textContent = post.title;
-
-      const content = document.createElement("p");
-      content.className = "post-content";
-      content.textContent = post.content;
+      )} ago</span><br><br><br><span class="post-title">${post.title}</span><br><br>${
+        post.content
+      }`;
 
       if (sessionStorage.getItem("username") === post.author) {
         postDiv.appendChild(deleteIcon);
@@ -207,6 +257,9 @@
       postDiv.appendChild(time);
       postDiv.appendChild(title);
       postDiv.appendChild(content);
+
+      votingContainer.appendChild(upvoteButton);
+      votingContainer.appendChild(downvoteButton);
 
       postsContainer.appendChild(postDiv);
     });
@@ -525,17 +578,28 @@
     cursor: pointer;
     transition: border-color 0.3s;
     position: relative;
+    display: flex;
+    border: 1px solid #ccc; /* Example border */
+    margin-bottom: 10px; /* Space between posts */
   }
 
   .post:hover {
     border-color: black;
   }
 
-  .post-author,
+  /* .post-author,
   .post-title,
   .post-content {
     margin: 0 0 8px 0;
     padding: 0 16px;
+  } */
+
+  .post-title {
+    font-weight: bold;
+    font-size: 23px;
+  }
+  .post-time {
+    font-size: 15px;
   }
 
   @media (max-width: 768px) {
@@ -566,7 +630,6 @@
     border: 1px solid #888;
     width: 80%;
   }
-
 
   .pmodal {
     display: none;
@@ -732,18 +795,18 @@
   }
 
   .dropbtn {
-  background-color: rgb(0, 0, 0);
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: black;
-  cursor: pointer;
-  border-radius: 7px; 
-  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.2); /* horizontal-offset vertical-offset blur-radius color */
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: black;
+    cursor: pointer;
+    border-radius: 7px;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.2); /* horizontal-offset vertical-offset blur-radius color */
 
-  /* height: 10%; */
-  /* width: 100%; */
-}
+    /* height: 10%; */
+    /* width: 100%; */
+  }
 
   .dropdown-content {
     display: none;
@@ -753,7 +816,7 @@
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    border-radius: 7px; 
+    border-radius: 7px;
   }
 
   .dropdown-content a {
@@ -767,16 +830,55 @@
 
   .dropdown-content a:hover {
     background-color: #f1f1f1;
-    border-radius: 7px; 
+    border-radius: 7px;
   }
 
   .dropdown:hover .dropdown-content {
     display: block;
-    border-radius: 7px; 
+    border-radius: 7px;
   }
 
   .dropdown:hover .dropbtn {
     background-color: #9c9c9c;
-    border-radius: 7px; 
+    border-radius: 7px;
   }
+
+  /* sorting bar on top */
+  .sorting-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed for spacing */
+    margin-bottom: 10px;
+  }
+
+  .sort-button {
+    margin: 0 10px;
+    padding: 5px 20px;
+    cursor: pointer;
+    background-color: #f0f0f0; /* Light grey background */
+    border: 1px solid #d4d4d4; /* Slightly darker border */
+    border-radius: 5px;
+  }
+
+  .sort-button-active {
+    background-color: #d4d4d4; /* Slightly darker to indicate active state */
+  }
+
+  /* updown vote button */
+  .voting-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px; /* Space around voting buttons */
+    background-color: #f8f8f8; /* Example background color */
+  }
+
+  .vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px; /* Increase padding to make the button larger */
+    font-size: 24px; /* Increase font size to make the arrow larger */
+    margin: 5px 0; /* Space between buttons */
+}
 </style>
