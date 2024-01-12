@@ -65,6 +65,35 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.post("/posts", (req, res) => {
+  const { title, content, author } = req.body; // Ensure your form sends these fields
+  const sql = "INSERT INTO posts (title, content, author) VALUES (?, ?, ?)";
+  db.query(sql, [title, content, author], (err, result) => {
+    if (err) {
+      console.error("Database error during post creation:", err);
+      return res.status(500).send("Error creating new post");
+    }
+    res.json({
+      success: true,
+      message: "Post created",
+      postId: result.insertId,
+    });
+  });
+});
+
+app.get("/posts", (req, res) => {
+  const sql = "SELECT id, title, content, author FROM posts"; // Select only id and title
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Database error during fetching posts:", err);
+      return res.status(500).send("Error fetching posts");
+    }
+    res.json(results);
+  });
+});
+
+
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });

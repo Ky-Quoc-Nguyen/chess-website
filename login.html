@@ -6,10 +6,62 @@
       <span id="usernameDisplay">Hello, <span id="username"></span></span>
       <button class="signout" id="signOutButton">Sign Out</button>
     </div>
+
+    <button class="signout" id="createPostButton">Create Post</button>
+
+    <div id="postFormContainer" class="modal">
+      <form id="postForm" class="modal-content">
+        <div class="form-group">
+          <label for="postTitle">Title:</label>
+          <input type="text" id="postTitle" name="postTitle" required />
+        </div>
+        <div class="form-group">
+          <label for="postBody">Body:</label>
+          <textarea id="postBody" name="postBody" required></textarea>
+        </div>
+        <button type="submit">Submit Post</button>
+        <button type="button" onclick="closeForm()">Cancel</button>
+      </form>
+    </div>
+
+    <div id="postsContainer">
+      <!-- posts will go here from js script -->
+    </div>
+
+    <div id="postModal" class="pmodal">
+      <!-- Modal content -->
+      <div class="pmodal-content">
+        <span class="close">&times;</span>
+        <h2 id="pmodalTitle"></h2>
+        <p id="pmodalContent"></p>
+        <!-- comments -->
+        <div id="commentsSection">
+          <h3>Comments</h3>
+          <div id="commentsList">
+            <!-- Comments will be inserted here -->
+          </div>
+          <!-- New Comment Form -->
+          <form id="newCommentForm">
+            <input
+              type="text"
+              id="newCommentText"
+              placeholder="Write a comment..."
+              required
+            />
+            <button class="button-30" type="submit">Post Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 
 <style>
+  body {
+    background-color: #dae0e6; /* Replace with your desired color */
+    /* ... other styles ... */
+  }
+
   .user-panel {
     position: fixed;
     top: 10px;
@@ -67,6 +119,235 @@
       padding: 12px 50px;
     }
   }
+
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  /* Pop-up form container */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 40px;
+    border: 1px solid #888;
+    width: 50%;
+    font-size: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Input fields and text area styles */
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  /* Button styles */
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  label {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  #postsTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #postsTable,
+  #postsTable th,
+  #postsTable td {
+    border: 1px solid #ddd;
+  }
+
+  #postsTable th,
+  #postsTable td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  #postsTable th {
+    background-color: #f2f2f2;
+  }
+
+  #postsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers the posts horizontally */
+  }
+
+  .post {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    margin-bottom: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Adjust the width as needed */
+    max-width: 800px; /* Adjust the maximum width as needed */
+    max-height: 300px; /* Maximum height for the post container */
+    overflow: auto; /* Add scroll bars if content overflows */
+    word-wrap: break-word; /* Ensures the text breaks to prevent horizontal overflow */
+    cursor: pointer; /* Changes the cursor to indicate the post is clickable */
+    transition: border-color 0.3s;
+  }
+
+  .post:hover {
+    border-color: black;
+  }
+
+  .post-author,
+  .post-title,
+  .post-content {
+    margin: 0 0 8px 0; /* Add some space between the elements */
+    padding: 0 16px; /* Add some padding on the sides */
+  }
+
+  /* You might also want to add some media queries to handle responsiveness on smaller screens */
+  @media (max-width: 768px) {
+    .post {
+      width: 90%; /* Posts take more width on smaller screens */
+    }
+  }
+
+  .pmodal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  }
+
+  .pmodal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #commentsSection {
+    margin-top: 20px;
+  }
+
+  #commentForm {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  #commentInput {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  #commentsContainer {
+    max-height: 200px;
+    /* overflow-y: auto; scroll for overflow */
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+
+  .button-30 {
+    align-items: center;
+    appearance: none;
+    background-color: #fcfcfd;
+    border-radius: 4px;
+    border-width: 0;
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+    box-sizing: border-box;
+    color: #36395a;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: "JetBrains Mono", monospace;
+    height: 48px;
+    justify-content: center;
+    line-height: 1;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    transition: box-shadow 0.15s, transform 0.15s;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    will-change: box-shadow, transform;
+    font-size: 18px;
+  }
+
+  .button-30:focus {
+    box-shadow: #d6d6e7 0 0 0 1.5px inset, rgba(45, 35, 66, 0.4) 0 2px 4px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+  }
+
+  .button-30:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, #d6d6e7 0 -3px 0 inset;
+    transform: translateY(-2px);
+  }
+
+  .button-30:active {
+    box-shadow: #d6d6e7 0 3px 7px inset;
+    transform: translateY(2px);
+  }
 </style>
 
 <script>
@@ -90,4 +371,159 @@
       });
     }
   });
+
+  document
+    .getElementById("createPostButton")
+    .addEventListener("click", function () {
+      document.getElementById("postFormContainer").style.display = "block";
+    });
+
+  function closeForm() {
+    document.getElementById("postFormContainer").style.display = "none";
+  }
+
+  document
+    .getElementById("postForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      closeForm();
+    });
+
+  document
+    .getElementById("postForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const username = sessionStorage.getItem("username");
+      const formData = new FormData(this);
+      fetch("http://localhost:3000/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: formData.get("postTitle"),
+          content: formData.get("postBody"),
+          author: username,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          document.getElementById("postFormContainer").style.display = "none";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    fetchPosts();
+  });
+
+  function fetchPosts() {
+    fetch("http://localhost:3000/posts")
+      .then((response) => response.json())
+      .then((posts) => {
+        const postsTableBody = document
+          .getElementById("postsTable")
+          .querySelector("tbody");
+        postsTableBody.innerHTML = "";
+
+        posts.forEach((post) => {
+          const row = postsTableBody.insertRow();
+          row.insertCell(0).textContent = post.title;
+          row.insertCell(1).textContent = post.content;
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }
+
+  function displayPosts(posts) {
+    const postsContainer = document.getElementById("postsContainer");
+    postsContainer.innerHTML = ""; // Clear the container
+
+    posts.forEach((post) => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post";
+      postDiv.onclick = function () {
+        openModal(post);
+      }; // Add the onclick event
+
+      // Create an element for the author
+      const author = document.createElement("p");
+      author.className = "post-author";
+      author.textContent = `Posted by ${post.author}`;
+
+      // Create an element for the title
+      const title = document.createElement("h2");
+      title.className = "post-title";
+      title.textContent = post.title;
+
+      // Create an element for the content
+      const content = document.createElement("p");
+      content.className = "post-content";
+      content.textContent = post.content;
+
+      // Append the author, title, and content to the post div
+      postDiv.appendChild(author);
+      postDiv.appendChild(title);
+      postDiv.appendChild(content);
+
+      // Append the post div to the posts container
+      postsContainer.appendChild(postDiv);
+    });
+  }
+
+  function fetchAndDisplayPosts() {
+    fetch("http://localhost:3000/posts")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((posts) => {
+        displayPosts(posts);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }
+
+  // Function to open the modal with post details
+  function openModal(postId) {
+    document.getElementById("pmodalTitle").textContent = postId.title;
+    document.getElementById("pmodalContent").textContent = postId.content;
+    document.getElementById("postModal").style.display = "block";
+
+    fetchCommentsForPost(postId);
+    // Set up the form for posting a new comment
+    const newCommentForm = document.getElementById("newCommentForm");
+    newCommentForm.onsubmit = function (event) {
+      event.preventDefault();
+      const commentText = document.getElementById("newCommentText").value;
+      postNewComment(postId, commentText);
+    };
+  }
+
+  
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    document.getElementById("postModal").style.display = "none";
+  };
+
+  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
 </script>
