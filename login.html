@@ -195,7 +195,8 @@
       upvoteButton.innerHTML = '&#8679;';
       upvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
-        // Upvote action here
+        this.classList.toggle('active'); // Toggle the 'active' class on click
+
       };
 
       // Downvote button
@@ -204,7 +205,7 @@
       downvoteButton.innerHTML = '&#8681;';
       downvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
-        // Downvote action here
+        this.classList.toggle('active'); // Toggle the 'active' class on click
       };
 
       // Content container
@@ -245,9 +246,9 @@
         post.author
       } ${timeSince(
         createdAtDate
-      )} ago</span><br><br><br><span class="post-title">${post.title}</span><br><br>${
+      )} ago</span><br><br><br><span class="post-title">${post.title}</span><br><br><span class="post-content">${
         post.content
-      }`;
+      }</span>`;
 
       if (sessionStorage.getItem("username") === post.author) {
         postDiv.appendChild(deleteIcon);
@@ -573,7 +574,8 @@
     width: 80%;
     max-width: 800px;
     max-height: 300px;
-    overflow: auto;
+    overflow: hidden;
+    /* text-color:linear-gradient(transparent 150px, white); */
     word-wrap: break-word;
     cursor: pointer;
     transition: border-color 0.3s;
@@ -587,12 +589,15 @@
     border-color: black;
   }
 
-  /* .post-author,
-  .post-title,
-  .post-content {
-    margin: 0 0 8px 0;
-    padding: 0 16px;
-  } */
+  .post:before {
+  content:'';
+  width:100%;
+  height:100%;    
+  position:absolute;
+  left:0;
+  top:0;
+  background:linear-gradient(transparent 150px, white);
+}
 
   .post-title {
     font-weight: bold;
@@ -600,6 +605,9 @@
   }
   .post-time {
     font-size: 15px;
+  }
+  .post-content {
+    color:linear-gradient(transparent 150px, rgb(255, 0, 0));
   }
 
   @media (max-width: 768px) {
@@ -871,14 +879,28 @@
     align-items: center;
     padding: 10px; /* Space around voting buttons */
     background-color: #f8f8f8; /* Example background color */
+    z-index: 1;
+    border-radius: 5px;
   }
 
   .vote-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px; /* Increase padding to make the button larger */
-    font-size: 24px; /* Increase font size to make the arrow larger */
-    margin: 5px 0; /* Space between buttons */
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin: 5px 0; /* Space between buttons */
+  padding: 5px; /* Add padding to create space around the icon */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+  font-size: 25px;
+  border-radius: 5px;
+}
+
+.vote-button:hover {
+  background-color: #cccccc; /* Gray background on hover */
+  border-radius: 5px; /* Optional: rounded corners for the background */
+}
+
+.vote-button.active {
+  color: hsl(214, 100%, 71%); /* Or any color you like */
+  font-size: 35px;
 }
 </style>
