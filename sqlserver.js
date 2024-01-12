@@ -82,7 +82,7 @@ app.post("/posts", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  const sql = "SELECT id, title, content, author FROM posts"; // Select only id and title
+  const sql = "SELECT id, title, content, author,created_at FROM posts"; // Select only id and title
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Database error during fetching posts:", err);
