@@ -92,7 +92,29 @@ app.get("/posts", (req, res) => {
   });
 });
 
+app.get('/getComments/:postId', (req, res) => {
+  const postId = req.params.postId;
+  const sql = 'SELECT * FROM comments WHERE post_id = ?';
+  db.query(sql, [postId], (err, results) => {
+      if (err) {
+          console.error('Error fetching comments:', err);
+          return res.status(500).json({ success: false, message: 'Error fetching comments' });
+      }
+      res.json(results);
+  });
+});
 
+app.post('/postComment', (req, res) => {
+  const { postId, author, content } = req.body;
+  const sql = 'INSERT INTO comments (post_id, author, content) VALUES (?, ?, ?)';
+  db.query(sql, [postId, author, content], (err, result) => {
+      if (err) {
+          console.error('Error posting comment:', err);
+          return res.status(500).json({ success: false, message: 'Error posting comment' });
+      }
+      res.json({ success: true, message: 'Comment posted successfully' });
+  });
+});
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

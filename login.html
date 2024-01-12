@@ -3,7 +3,7 @@
   <head> </head>
   <body>
     <div id="userPanel" class="user-panel">
-      <span id="usernameDisplay">Hello, <span id="username"></span></span>
+      <span id="usernameDisplay">Hello, <span id="username"></span> ! </span>
       <button class="signout" id="signOutButton">Sign Out</button>
     </div>
 
@@ -131,36 +131,31 @@
 
   function displayPosts(posts) {
     const postsContainer = document.getElementById("postsContainer");
-    postsContainer.innerHTML = ""; // Clear the container
+    postsContainer.innerHTML = ""; 
 
     posts.forEach((post) => {
       const postDiv = document.createElement("div");
       postDiv.className = "post";
       postDiv.onclick = function () {
         openModal(post);
-      }; // Add the onclick event
+      }; 
 
-      // Create an element for the author
       const author = document.createElement("p");
       author.className = "post-author";
       author.textContent = `Posted by ${post.author}`;
 
-      // Create an element for the title
       const title = document.createElement("h2");
       title.className = "post-title";
       title.textContent = post.title;
 
-      // Create an element for the content
       const content = document.createElement("p");
       content.className = "post-content";
       content.textContent = post.content;
 
-      // Append the author, title, and content to the post div
       postDiv.appendChild(author);
       postDiv.appendChild(title);
       postDiv.appendChild(content);
 
-      // Append the post div to the posts container
       postsContainer.appendChild(postDiv);
     });
   }
@@ -181,17 +176,83 @@
       });
   }
 
-  // Function to open the modal with post details
-  function openModal(postId) {
-    document.getElementById("pmodalTitle").textContent = postId.title;
-    document.getElementById("pmodalContent").textContent = postId.content;
+  function openModal(post) {
+    document.getElementById("pmodalTitle").textContent = post.title;
+    document.getElementById("pmodalContent").textContent = post.content;
+
+    // Store the postId as a data attribute on the newCommentForm
+    const newCommentForm = document.getElementById("newCommentForm");
+    newCommentForm.setAttribute("data-post-id", post.id);
+
     document.getElementById("postModal").style.display = "block";
+
+    // Fetch and display comments for this post
+    // fetchCommentsForPost(post.id);
+    //console.log(post.id);
+    // Fetch and display comments for the post
+    fetch(`http://localhost:3000/getComments/${post.id}`)
+      .then((response) => response.json())
+      .then((comments) => {
+        const commentsList = document.getElementById("commentsList");
+        commentsList.innerHTML = ""; // Clear existing comments
+        comments.forEach((comment) => {
+          const commentDiv = document.createElement("div");
+          commentDiv.textContent = `${comment.author}: ${comment.content}`;
+          commentsList.appendChild(commentDiv);
+        });
+      })
+      .catch((error) => console.error("Error fetching comments:", error));
   }
 
-  // Get the <span> element that closes the modal
+  document
+    .getElementById("newCommentForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const postId = this.getAttribute("data-post-id"); // Retrieve the stored postId
+      const commentText = document.getElementById("newCommentText").value;
+      const author = sessionStorage.getItem("username"); // Or get author name from the session
+
+      fetch("http://localhost:3000/postComment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId: postId,
+          author: author,
+          content: commentText,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            document.getElementById("newCommentText").value = "";
+            refreshComments(postId); // Refresh comments for the current post
+          } else {
+            alert("Failed to post comment: " + data.message);
+          }
+        })
+        .catch((error) => console.error("Error posting new comment:", error));
+    });
+
+  function refreshComments(postId) {
+    fetch(`http://localhost:3000/getComments/${postId}`)
+      .then((response) => response.json())
+      .then((comments) => {
+        const commentsList = document.getElementById("commentsList");
+        commentsList.innerHTML = ""; 
+        comments.forEach((comment) => {
+          const commentDiv = document.createElement("div");
+          commentDiv.textContent = `${comment.author}: ${comment.content}`;
+          commentsList.appendChild(commentDiv);
+        });
+      })
+      .catch((error) => console.error("Error fetching comments:", error));
+  }
+
+
   var span = document.getElementsByClassName("close")[0];
 
-  // When the user clicks on <span> (x), close the modal
   span.onclick = function () {
     document.getElementById("postModal").style.display = "none";
   };
@@ -199,6 +260,7 @@
   document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
 </script>
 
+<!-- STYLEEEEE -->
 <style>
   body {
     background-color: #dae0e6; /* Replace with your desired color */
