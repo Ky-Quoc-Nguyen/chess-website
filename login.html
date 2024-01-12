@@ -56,6 +56,149 @@
   </body>
 </html>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const username = sessionStorage.getItem("username");
+    console.log("Retrieved username:", username);
+
+    if (username) {
+      document.getElementById("username").textContent = username;
+    } else {
+      window.location.href = "index.html";
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginbutton = document.getElementById("signOutButton");
+    if (loginbutton) {
+      loginbutton.addEventListener("click", () => {
+        sessionStorage.clear();
+        window.location.href = "index.html";
+      });
+    }
+  });
+
+  document
+    .getElementById("createPostButton")
+    .addEventListener("click", function () {
+      document.getElementById("postFormContainer").style.display = "block";
+    });
+
+  function closeForm() {
+    document.getElementById("postFormContainer").style.display = "none";
+  }
+
+  document
+    .getElementById("postForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      closeForm();
+    });
+
+  document
+    .getElementById("postForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      const username = sessionStorage.getItem("username");
+      const formData = new FormData(this);
+      fetch("http://localhost:3000/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: formData.get("postTitle"),
+          content: formData.get("postBody"),
+          author: username,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Success:", data);
+          document.getElementById("postFormContainer").style.display = "none";
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+
+  function displayPosts(posts) {
+    const postsContainer = document.getElementById("postsContainer");
+    postsContainer.innerHTML = ""; // Clear the container
+
+    posts.forEach((post) => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post";
+      postDiv.onclick = function () {
+        openModal(post);
+      }; // Add the onclick event
+
+      // Create an element for the author
+      const author = document.createElement("p");
+      author.className = "post-author";
+      author.textContent = `Posted by ${post.author}`;
+
+      // Create an element for the title
+      const title = document.createElement("h2");
+      title.className = "post-title";
+      title.textContent = post.title;
+
+      // Create an element for the content
+      const content = document.createElement("p");
+      content.className = "post-content";
+      content.textContent = post.content;
+
+      // Append the author, title, and content to the post div
+      postDiv.appendChild(author);
+      postDiv.appendChild(title);
+      postDiv.appendChild(content);
+
+      // Append the post div to the posts container
+      postsContainer.appendChild(postDiv);
+    });
+  }
+
+  function fetchAndDisplayPosts() {
+    fetch("http://localhost:3000/posts")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((posts) => {
+        displayPosts(posts);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }
+
+  // Function to open the modal with post details
+  function openModal(postId) {
+    document.getElementById("pmodalTitle").textContent = postId.title;
+    document.getElementById("pmodalContent").textContent = postId.content;
+    document.getElementById("postModal").style.display = "block";
+  }
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    document.getElementById("postModal").style.display = "none";
+  };
+
+  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
+</script>
+
 <style>
   body {
     background-color: #dae0e6; /* Replace with your desired color */
@@ -349,181 +492,3 @@
     transform: translateY(2px);
   }
 </style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const username = sessionStorage.getItem("username");
-    console.log("Retrieved username:", username);
-
-    if (username) {
-      document.getElementById("username").textContent = username;
-    } else {
-      window.location.href = "index.html";
-    }
-  });
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const loginbutton = document.getElementById("signOutButton");
-    if (loginbutton) {
-      loginbutton.addEventListener("click", () => {
-        sessionStorage.clear();
-        window.location.href = "index.html";
-      });
-    }
-  });
-
-  document
-    .getElementById("createPostButton")
-    .addEventListener("click", function () {
-      document.getElementById("postFormContainer").style.display = "block";
-    });
-
-  function closeForm() {
-    document.getElementById("postFormContainer").style.display = "none";
-  }
-
-  document
-    .getElementById("postForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-      closeForm();
-    });
-
-  document
-    .getElementById("postForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
-      const username = sessionStorage.getItem("username");
-      const formData = new FormData(this);
-      fetch("http://localhost:3000/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: formData.get("postTitle"),
-          content: formData.get("postBody"),
-          author: username,
-        }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              "Network response was not ok " + response.statusText
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log("Success:", data);
-          document.getElementById("postFormContainer").style.display = "none";
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    });
-
-  document.addEventListener("DOMContentLoaded", function () {
-    fetchPosts();
-  });
-
-  function fetchPosts() {
-    fetch("http://localhost:3000/posts")
-      .then((response) => response.json())
-      .then((posts) => {
-        const postsTableBody = document
-          .getElementById("postsTable")
-          .querySelector("tbody");
-        postsTableBody.innerHTML = "";
-
-        posts.forEach((post) => {
-          const row = postsTableBody.insertRow();
-          row.insertCell(0).textContent = post.title;
-          row.insertCell(1).textContent = post.content;
-        });
-      })
-      .catch((error) => {
-        console.error("Error fetching posts:", error);
-      });
-  }
-
-  function displayPosts(posts) {
-    const postsContainer = document.getElementById("postsContainer");
-    postsContainer.innerHTML = ""; // Clear the container
-
-    posts.forEach((post) => {
-      const postDiv = document.createElement("div");
-      postDiv.className = "post";
-      postDiv.onclick = function () {
-        openModal(post);
-      }; // Add the onclick event
-
-      // Create an element for the author
-      const author = document.createElement("p");
-      author.className = "post-author";
-      author.textContent = `Posted by ${post.author}`;
-
-      // Create an element for the title
-      const title = document.createElement("h2");
-      title.className = "post-title";
-      title.textContent = post.title;
-
-      // Create an element for the content
-      const content = document.createElement("p");
-      content.className = "post-content";
-      content.textContent = post.content;
-
-      // Append the author, title, and content to the post div
-      postDiv.appendChild(author);
-      postDiv.appendChild(title);
-      postDiv.appendChild(content);
-
-      // Append the post div to the posts container
-      postsContainer.appendChild(postDiv);
-    });
-  }
-
-  function fetchAndDisplayPosts() {
-    fetch("http://localhost:3000/posts")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((posts) => {
-        displayPosts(posts);
-      })
-      .catch((error) => {
-        console.error("Error fetching posts:", error);
-      });
-  }
-
-  // Function to open the modal with post details
-  function openModal(postId) {
-    document.getElementById("pmodalTitle").textContent = postId.title;
-    document.getElementById("pmodalContent").textContent = postId.content;
-    document.getElementById("postModal").style.display = "block";
-
-    fetchCommentsForPost(postId);
-    // Set up the form for posting a new comment
-    const newCommentForm = document.getElementById("newCommentForm");
-    newCommentForm.onsubmit = function (event) {
-      event.preventDefault();
-      const commentText = document.getElementById("newCommentText").value;
-      postNewComment(postId, commentText);
-    };
-  }
-
-  
-
-  // Get the <span> element that closes the modal
-  var span = document.getElementsByClassName("close")[0];
-
-  // When the user clicks on <span> (x), close the modal
-  span.onclick = function () {
-    document.getElementById("postModal").style.display = "none";
-  };
-
-  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
-</script>

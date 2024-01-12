@@ -1,220 +1,176 @@
 <!-- Main html code -->
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Peter's Chess Club</title>
-  </head>
-  <body>
-    <nav class="navbar">
-      <ul>
-        <li><a href="#" onclick="showPage('home')">Home</a></li>
-        <li><a href="#" onclick="showPage('about')">About</a></li>
-        <li><a href="#" onclick="showPage('gallery')">Gallery</a></li>
-        <li><a href="#" onclick="showPage('contact')">Contact</a></li>
-        <li><a href="#" onclick="showPage('login')">Log In</a></li>
-      </ul>
-    </nav>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Peter's Chess Club</title>
+</head>
+<body>
+  <nav class="navbar">
+    <ul>
+      <li><a href="#" onclick="showPage('home')">Home</a></li>
+      <li><a href="#" onclick="showPage('about')">About</a></li>
+      <li><a href="#" onclick="showPage('gallery')">Gallery</a></li>
+      <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+      <li><a href="#" onclick="showPage('login')">Log In</a></li>
+  </ul>
+  </nav>
 
-    <section id="home" class="page">
-      <header class="header">
-        <h1>Welcome to</h1>
-        <!-- dont add the name other wise dad will see it when he walks into the room -->
-      </header>
-      <div class="container">
-        <div class="text-column">
-          <h2>We have taught more than 20+ children</h2>
-          <p>
-            X's chess club is a completely chess club for children. Led by Cuong
-            (Peter) Nguyen, who is a certified coach, ex-professional player
-            from the Vietnam National chess team. Peter started this chess club
-            out of passion and it is completely free! His dream is to assemble a
-            bunch of kids who are passionate about chess to compete.
-          </p>
-        </div>
-        <div class="image-column">
-          <img src="images\test1.jpg" alt="test image 1" />
-        </div>
+  
+  <section id="home" class="page">
+    <header class="header">
+     <h1>Welcome to </h1>  <!-- dont add the name other wise dad will see it when he walks into the room -->
+    </header>
+    <div class="container">
+      <div class="text-column">
+        <h2>We have taught more than 20+ children</h2>
+        <p>X's chess club is a completely chess club for children. Led by Cuong (Peter) Nguyen, who is a certified coach, ex-professional player from the Vietnam National chess team. Peter started this chess club out of passion and it is completely free! His dream is to assemble a bunch of kids who are passionate about chess to compete.</p>
       </div>
-      <div class="container">
-        <div class="text-column">
-          <h2>Accomplishments</h2>
-          <p>
-            X has competed in many tournament in Asia and Europe... Details
-            about how he taught his sons.
-          </p>
-        </div>
-        <div class="image-column">
-          <img src="images\test2.jpg" alt="test image 2" />
-        </div>
-      </div>
-    </section>
+    <div class="image-column">
+        <img src="images\test1.jpg" alt="test image 1">
+    </div>
+    </div>
+  <div class="container">
+    <div class="text-column">
+      <h2>Accomplishments</h2>
+      <p>X has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
+    </div>
+    <div class="image-column">
+        <img src="images\test2.jpg" alt="test image 2">
+    </div>
+  </div>
+  </section>
 
-    <section id="about" class="page" style="display: none">
-      <div class="container">
-        <div class="image-column">
-          <img src="images\test3.png" alt="test image 3" />
-        </div>
-        <div class="text-column">
-          <h2>About X</h2>
-          <p>
-            X has competed in many tournament in Asia and Europe... Details
-            about how he taught his sons.
-          </p>
-        </div>
+  <section id="about" class="page" style="display:none;">
+    <div class="container">
+      <div class="image-column">
+        <img src="images\test3.png" alt="test image 3">
       </div>
-    </section>
+      <div class="text-column">
+        <h2>About X</h2>
+        <p>X has competed in many tournament in Asia and Europe... Details about how he taught his sons.</p>
+      </div>
+    </div>
+  </section>
 
-    <section id="gallery" class="page" style="display: none">
+  <section id="gallery" class="page" style="display:none;">
       <!-- Content for Gallery -->
-    </section>
+  </section>
 
-    <section id="contact" class="page" style="display: none">
+  <section id="contact" class="page" style="display:none;">
       <!-- Content for Contact -->
 
       <div class="contact-container">
-        <form
-          action="https://api.web3forms.com/submit"
-          method="POST"
-          class="contact-left"
-        >
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-left">
           <div class="contact-left-title">
             <h2>Get In Touch</h2>
-            <hr />
-          </div>
-          <input
-            type="hidden"
-            name="access_key"
-            value="da1709d9-f9b3-47d8-82a3-a62b4b944aaa"
-          />
-          <input
-            type="name"
-            name="name"
-            placeholder="Your name"
-            class="contacts-inputs-name"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email"
-            class="contacts-inputs-email"
-            required
-          />
-          <textarea
-            name="message"
-            placeholder="Your message"
-            class="contacts-inputs-message"
-            required
-          ></textarea>
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </section>
+            <hr>
+            
 
-    <section id="login" class="page">
-      <div class="login-container">
+          </div>
+          <input type="hidden" name="access_key" value="da1709d9-f9b3-47d8-82a3-a62b4b944aaa">
+          <input type="name" name="name" placeholder="Your name" class="contacts-inputs-name" required>
+          <input type="email" name="email" placeholder="Your email" class="contacts-inputs-email" required>
+          <textarea name="message" placeholder="Your message" class="contacts-inputs-message" required></textarea>
+          <button type="submit">Submit</button>
+
+
+        </form>
+
+
+      </div>
+  </section>
+
+  <section id="login" class="page">
+    <div class="login-container">
         <!-- Login Form -->
         <form id="loginForm">
-          <label for="username">Username:</label><br />
-          <input type="text" id="username" name="username" required /><br />
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
 
-          <label for="password">Password:</label><br />
-          <input type="password" id="password" name="password" required /><br />
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
 
-          <input type="submit" value="Login" />
-          <p class="new-user">
-            New User?
-            <a href="#" onclick="showRegistrationForm()">Register here</a>
-          </p>
+            <input type="submit" value="Login">
+            <p class="new-user">New User? <a href="#" onclick="showRegistrationForm()">Register here</a></p>
         </form>
 
         <!-- Registration Form -->
-        <form
-          action="http://localhost:3000/register"
-          method="post"
-          id="registrationForm"
-          style="display: none"
-        >
-          <label for="newUsername">Username:</label><br />
-          <input type="text" id="newUsername" name="username" required /><br />
+        <form action="http://localhost:3000/register" method="post" id="registrationForm" style="display:none;">
+          <label for="newUsername">Username:</label><br>
+          <input type="text" id="newUsername" name="username" required><br>
 
-          <label for="newPassword">Password:</label><br />
-          <input
-            type="password"
-            id="newPassword"
-            name="password"
-            required
-          /><br />
+          <label for="newPassword">Password:</label><br>
+          <input type="password" id="newPassword" name="password" required><br>
 
-          <input type="submit" value="Register" />
+          <input type="submit" value="Register">
         </form>
-      </div>
-    </section>
-  </body>
+    </div>
+</section>
+
+</body>
 </html>
 
 <!-- Below are the styling. Adjust it to your liking. Just google it and copy whatever you like to make the website looks good  -->
 
 <style>
-  body {
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-
+  
   .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 20px;
   }
-
+  
   .text-column {
     flex-basis: 50%;
   }
-
+  
   .image-column {
     flex-basis: 50%;
   }
-
+  
   .header {
-    background-image: url("images/chess1.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    text-align: center;
-    padding: 450px 0;
-    color: #f5f5f7;
-    position: relative;
-  }
+  background-image: url('images/chess1.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  text-align: center;
+  padding: 450px 0; 
+  color: #F5F5F7;
+  position: relative;
+}
 
-  .header h1 {
-    font-family: "Serif font", Times, serif;
-    font-size: 72px;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* background: rgba(0, 0, 0, 0.5);  */
-    padding: 10px 20px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  */
-    border-radius: 5px;
-  }
+.header h1 {
+  font-family: 'Serif font', Times, serif;
+  font-size: 72px; 
+  margin: 0;
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  /* background: rgba(0, 0, 0, 0.5);  */
+  padding: 10px 20px; 
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  */
+  border-radius: 5px; 
+}
+  
+p {
+  color: #666;
+  font-size: 20px; 
+}
 
-  p {
-    color: #666;
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 50px; /* Sets the font size for all <h2> tags */
-  }
-
+h2 {
+  font-size: 50px; /* Sets the font size for all <h2> tags */
+}
+  
   @media (max-width: 768px) {
     .container {
       flex-direction: column;
@@ -225,74 +181,75 @@
     }
   }
 
-  .welcome-title {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
+.welcome-title {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
-  .navbar {
+.navbar {
     background-color: #121212;
     overflow: hidden;
     width: 100%;
     top: 0;
-    position: fixed;
-    z-index: 1000;
+    position: fixed; 
+    z-index: 1000; 
     height: 60px;
-  }
+}
 
-  .navbar ul {
+.navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: center; 
     gap: 150px;
-  }
+}
 
-  .navbar li {
+.navbar li {
     float: left;
-  }
+}
 
-  .navbar li a {
-    font-family: "Serif font", Times, serif;
-    display: block;
+.navbar li a {
+    font-family: 'Serif font', Times, serif;
+    display: block; 
     color: #a0a0a0;
     text-align: center;
     font-size: 25px;
     padding: 14px 16px;
     text-decoration: none;
-  }
+}
 
-  .navbar li a:hover {
-    background-color: #f5f5f7;
+
+.navbar li a:hover {
+    background-color: #F5F5F7;
     color: black;
-  }
+}
 
-  .header {
-    background-image: url("images/chess1.jpeg");
+.header {
+    background-image: url('images/chess1.jpeg');
     background-size: cover;
     background-position: center;
     text-align: center;
-    padding: 750px 0;
-    margin-top: 50px;
-    color: #f5f5f7;
-    position: relative;
-  }
+    padding: 750px 0; 
+    margin-top: 50px; 
+    color: #F5F5F7;
+    position: relative; 
+}
 
-  .header h1 {
-    font-family: "Serif font", Times, serif;
+.header h1 {
+    font-family: 'Serif font', Times, serif;
     font-size: 100px;
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
+}
 
-  /* Log in information box css */
+/* Log in information box css */
 
-  body {
+body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
@@ -301,38 +258,38 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-  }
+}
 
-  .login-container {
+.login-container {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 300px;
-  }
+}
 
-  form {
+form {
     display: flex;
     flex-direction: column;
-  }
+}
 
-  label {
+label {
     margin-bottom: 5px;
-  }
+}
 
-  input[type="text"],
-  input[type="password"] {
+input[type="text"],
+input[type="password"] {
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
-  }
+}
 
-  #login {
+#login {
     display: none;
-  }
+}
 
-  input[type="submit"] {
+input[type="submit"] {
     padding: 10px;
     background-color: #0056b3;
     color: white;
@@ -340,192 +297,195 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
+}
 
-  input[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #004494;
-  }
+}
 
-  .new-user {
+.new-user {
     margin-top: 15px;
     text-align: center;
-  }
+}
 
-  .new-user a {
+.new-user a {
     color: #007bff;
     text-decoration: none;
-  }
+}
 
-  .new-user a:hover {
+.new-user a:hover {
     text-decoration: underline;
-  }
-  .page {
+}
+.page {
     display: none;
-  }
+}
 
-  #home {
-    /* Or whichever section you want to show first */
+#home { /* Or whichever section you want to show first */
     display: block;
+}
+
+/*css for contact tab*/
+body{
+  font-family: 'Outfit';
+  background: linear-gradient();
+}
+
+/*css for contact container class*/
+.contact-container{
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.contact-left{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 20px;
+}
+
+.contact-left-title h2{
+  font-weight: 1000;
+  color: hsl(from color h s l);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-style: inherit;
+  margin-bottom: 5px;
+}
+
+.contact-left-title hr{
+  border: none;
+  width: 120px;
+  height: 5px;
+  background-color: hsl(hue, saturation, lightness);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+
+.contact-left textarea{
+  height: 140px;
+  padding-top: 15px;
+  border-radius: 20px;
+}
+
+.contacts-inputs-name{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+
+
+
+}
+
+.contacts-inputs-email{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+.contacts-inputs-message{
+  width: 400px;
+  height: 50px;
+  border: none;
+  outline: none;
+  padding-left: 25px;
+  font-weight: 500;
+  color: #666;
+  border-radius: 50px;
+}
+
+
+.contact-left button{
+  display: flex;
+  align-items: center;
+  padding: 15px 30px;
+  font-size: 16px;
+  color: rgb(255, 255, 255);
+  gap: 10px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(270deg, rgb(71, 71, 71),rgb(116, 116, 116));
+  cursor: pointer;
+}
+
+@media (max-width:800px){
+  .contact-inputs{
+    width: 80vw;
   }
 
-  /*css for contact tab*/
-  body {
-    font-family: "Outfit";
-    background: linear-gradient();
+  .contact-right{
+    display:none;
   }
+}
 
-  /*css for contact container class*/
-  .contact-container {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-  }
-
-  .contact-left {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 20px;
-  }
-
-  .contact-left-title h2 {
-    font-weight: 1000;
-    color: hsl(from color h s l);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-style: inherit;
-    margin-bottom: 5px;
-  }
-
-  .contact-left-title hr {
-    border: none;
-    width: 120px;
-    height: 5px;
-    background-color: hsl(hue, saturation, lightness);
-    border-radius: 10px;
-    margin-bottom: 20px;
-  }
-
-  .contact-left textarea {
-    height: 140px;
-    padding-top: 15px;
-    border-radius: 20px;
-  }
-
-  .contacts-inputs-name {
-    width: 400px;
-    height: 50px;
-    border: none;
-    outline: none;
-    padding-left: 25px;
-    font-weight: 500;
-    color: #666;
-    border-radius: 50px;
-  }
-
-  .contacts-inputs-email {
-    width: 400px;
-    height: 50px;
-    border: none;
-    outline: none;
-    padding-left: 25px;
-    font-weight: 500;
-    color: #666;
-    border-radius: 50px;
-  }
-
-  .contacts-inputs-message {
-    width: 400px;
-    height: 50px;
-    border: none;
-    outline: none;
-    padding-left: 25px;
-    font-weight: 500;
-    color: #666;
-    border-radius: 50px;
-  }
-
-  .contact-left button {
-    display: flex;
-    align-items: center;
-    padding: 15px 30px;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
-    gap: 10px;
-    border: none;
-    border-radius: 50px;
-    background: linear-gradient(270deg, rgb(71, 71, 71), rgb(116, 116, 116));
-    cursor: pointer;
-  }
-
-  @media (max-width: 800px) {
-    .contact-inputs {
-      width: 80vw;
-    }
-
-    .contact-right {
-      display: none;
-    }
-  }
 </style>
 
 <!-- below are the script to this html -->
 
 <script>
-  function showRegistrationForm() {
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("registrationForm").style.display = "block";
-  }
+function showRegistrationForm() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registrationForm').style.display = 'block';
+}
 
-  function handleRegistration(event) {
-    event.preventDefault();
+function handleRegistration(event) {
+    event.preventDefault(); 
 
-    const username = document.getElementById("newUsername").value;
-    const password = document.getElementById("newPassword").value;
-    console.log("Registered:", username, password);
+    const username = document.getElementById('newUsername').value;
+    const password = document.getElementById('newPassword').value;
+    console.log('Registered:', username, password); 
 
-    document.getElementById("registrationForm").style.display = "none";
-    document.getElementById("loginForm").style.display = "block";
-  }
+    document.getElementById('registrationForm').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+}
 
-  function showPage(pageId) {
-    console.log("Showing page:", pageId);
+function showPage(pageId) {
+    console.log('Showing page:', pageId); 
 
     const selectedPage = document.getElementById(pageId);
     if (selectedPage) {
-      document.querySelectorAll(".page").forEach((page) => {
-        page.style.display = "none";
-      });
-      selectedPage.style.display = "block";
+        document.querySelectorAll('.page').forEach(page => {
+            page.style.display = 'none';
+        });
+        selectedPage.style.display = 'block';
     } else {
-      console.error("No page found with ID:", pageId);
+        console.error('No page found with ID:', pageId);
     }
-  }
+}
 
-  document
-    .getElementById("loginForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault();
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
 
-      const formData = new FormData(this);
-      fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(Object.fromEntries(formData)),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            sessionStorage.setItem("username", data.username);
-            window.location.href = "login.html";
-          } else {
-            alert(data.message);
-          }
+        const formData = new FormData(this);
+        fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(Object.fromEntries(formData))
         })
-        .catch((error) => {
-          console.error("Error:", error);
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+              sessionStorage.setItem('username', data.username);
+              window.location.href = 'login.html'; 
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
         });
     });
 </script>

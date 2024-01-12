@@ -21,14 +21,16 @@
 
 -- INSERT INTO posts (title, content, author) VALUES ('Sample Post Title', 'This is the content of the sample post.', 'SampleAuthor');
 
--- DELETE FROM posts;
+-- DROP TABLE comments;
 
 -- CREATE TABLE comments (
 --     id INT AUTO_INCREMENT PRIMARY KEY,
 --     post_id INT,
 --     author VARCHAR(255),
---     content TEXT,
+--     content TEXT NOT NULL,
 --     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE
 -- );
 
-INSERT INTO comments (post_id, author, content) VALUES (20, 'Peter', 'bro this shit is so lit');
+-- INSERT INTO comments (post_id, author, content) VALUES (20, 'Peter', 'bro this shit is so lit');
+
+INSERT INTO comments (post_id, author, content) VALUES (20, 'CommentAuthor', 'Comment content here');
