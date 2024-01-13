@@ -36,4 +36,5 @@
 -- -- ADD COLUMN disliked_by TEXT;
 -- DROP COLUMN dislikes_count;
 
--- DELETE FROM posts
+-- DELETE FROM comments
+DELETE FROM posts

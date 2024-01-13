@@ -27,11 +27,27 @@
       <form id="postForm" class="modal-content">
         <div class="form-group">
           <label for="postTitle">Title:</label>
-          <input type="text" id="postTitle" name="postTitle" required />
+          <input
+            type="text"
+            id="postTitle"
+            name="postTitle"
+            placeholder="Cute Cat Pic :D"
+            required
+          />
         </div>
         <div class="form-group">
           <label for="postBody">Body:</label>
-          <textarea id="postBody" name="postBody" required></textarea>
+          <textarea
+            id="postBody"
+            name="postBody"
+            placeholder="Your Content. Ex: Look at my cat! [img]"
+            required
+          ></textarea>
+          <input
+            type="text"
+            id="imageUrl"
+            placeholder="Enter image URL here. Simply use [img] tag to embed your image anywhere in the post!"
+          />
         </div>
         <button class="button-30" type="submit">Submit Post</button>
         <button class="button-30" type="button" onclick="closeForm()">
@@ -142,6 +158,9 @@
       event.preventDefault();
       const username = sessionStorage.getItem("username");
       const formData = new FormData(this);
+      const imageUrlInput = document.getElementById("imageUrl");
+      const imageUrl = imageUrlInput ? imageUrlInput.value : "";
+
       fetch("http://localhost:3000/posts", {
         method: "POST",
         headers: {
@@ -149,7 +168,12 @@
         },
         body: JSON.stringify({
           title: formData.get("postTitle"),
-          content: formData.get("postBody"),
+          content: formData
+            .get("postBody")
+            .replace(
+              /\[img\]/g,
+              `<br><img src="${imageUrl}" alt="User image">`
+            ),
           author: username,
         }),
       })
@@ -195,6 +219,7 @@
   function displayPosts(posts) {
     const postsContainer = document.getElementById("postsContainer");
     postsContainer.innerHTML = "";
+    const currentUser = sessionStorage.getItem("username"); // or however you store the current user's ID
 
     posts.reverse().forEach((post) => {
       const postDiv = document.createElement("div");
@@ -212,6 +237,14 @@
       voteCountSpan.className = "vote-count";
       voteCountSpan.textContent = calculateVoteDifference(post);
 
+      // Parse liked_by and disliked_by as arrays
+      const likedByUsers = JSON.parse(post.liked_by || "[]");
+      const dislikedByUsers = JSON.parse(post.disliked_by || "[]");
+
+      // Check if the current user has liked or disliked the post
+      const userHasLiked = likedByUsers.includes(currentUser);
+      const userHasDisliked = dislikedByUsers.includes(currentUser);
+
       // Voting container
       const votingContainer = document.createElement("div");
       votingContainer.className = "voting-container";
@@ -220,6 +253,10 @@
       const upvoteButton = document.createElement("button");
       upvoteButton.className = "vote-button upvote";
       upvoteButton.innerHTML = "&#8679;";
+
+      if (userHasLiked) {
+        upvoteButton.classList.add("upvote-active");
+      }
       upvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote\
         const voteCountSpan = document.getElementById(`vote-count-${post.id}`);
@@ -261,6 +298,11 @@
       const downvoteButton = document.createElement("button");
       downvoteButton.className = "vote-button downvote";
       downvoteButton.innerHTML = "&#8681;";
+
+      if (userHasDisliked) {
+        downvoteButton.classList.add("downvote-active");
+      }
+
       downvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
         const voteCountSpan = document.getElementById(`vote-count-${post.id}`);
@@ -373,7 +415,9 @@
 
   function openModal(post) {
     document.getElementById("pmodalTitle").textContent = post.title;
-    document.getElementById("pmodalContent").textContent = post.content;
+
+    // Use innerHTML to parse the HTML tags in post.content
+    document.getElementById("pmodalContent").innerHTML = post.content;
 
     // Store the postId as a data attribute on the newCommentForm
     const newCommentForm = document.getElementById("newCommentForm");
@@ -395,9 +439,10 @@
           authorSpan.className = "comment-author";
           authorSpan.textContent = comment.author + " ";
 
+          // Also use innerHTML here if comment.content contains HTML that needs to be parsed
           const contentSpan = document.createElement("span");
           contentSpan.className = "comment-content";
-          contentSpan.textContent = comment.content;
+          contentSpan.innerHTML = comment.content; // Use innerHTML if the content has HTML tags
 
           commentDiv.appendChild(authorSpan);
           commentDiv.appendChild(contentSpan);
@@ -526,6 +571,11 @@
       return Math.floor(interval) + " minutes";
     }
     return Math.floor(seconds) + " seconds";
+  }
+
+  function replaceImageURLsWithTags(text) {
+    const urlRegex = /(https?:\/\/[^\s]+\.(jpg|jpeg|png|gif))/gi;
+    return text.replace(urlRegex, '<img src="$1" alt="Embedded Image" />');
   }
 
   var span = document.getElementsByClassName("close")[0];
@@ -995,7 +1045,6 @@
     padding-top: 0; /* Remove any padding at the top */
     padding-bottom: 0; /* Remove any padding at the bottom */
   }
-
 
   .vote-button {
     background: none;
