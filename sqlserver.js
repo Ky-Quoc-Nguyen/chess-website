@@ -152,16 +152,23 @@ app.post("/vote", (req, res) => {
     case "dislike":
       sql = `
         UPDATE posts
-        SET disliked_by = JSON_ARRAY_APPEND(COALESCE(liked_by, JSON_ARRAY()), '$', ?)
+        SET disliked_by = JSON_ARRAY_APPEND(COALESCE(disliked_by, JSON_ARRAY()), '$', ?)
         WHERE id = ?;
       `;
       break;
-    case "unvote":
+    case "unvoteUP":
       sql = `
         UPDATE posts
         SET liked_by = JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?)))
         WHERE id = ? AND JSON_CONTAINS(liked_by, JSON_QUOTE(?));
       `;
+      break;
+    case "unvoteDOWN":
+      sql = `
+          UPDATE posts
+          SET disliked_by = JSON_REMOVE(disliked_by, JSON_UNQUOTE(JSON_SEARCH(disliked_by, 'one', ?)))
+          WHERE id = ? AND JSON_CONTAINS(disliked_by, JSON_QUOTE(?));
+        `;
       break;
     default:
       return res
@@ -172,10 +179,14 @@ app.post("/vote", (req, res) => {
   db.query(sql, [username, postId, username], (err, result) => {
     if (err) {
       console.error("Error updating vote:", err);
-      return res.status(500).json({ success: false, message: "Error updating vote" });
+      return res
+        .status(500)
+        .json({ success: false, message: "Error updating vote" });
     }
     if (result.affectedRows === 0) {
-      return res.status(404).json({ success: false, message: "Post not found or no changes made" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found or no changes made" });
     }
     res.json({ success: true, message: "Vote updated" });
   });

@@ -31,7 +31,9 @@
 -- ADD COLUMN likes_count INT DEFAULT 0,
 -- ADD COLUMN dislikes_count INT DEFAULT 0;
 
-ALTER TABLE posts
--- ADD COLUMN liked_by TEXT,
--- ADD COLUMN disliked_by TEXT;
-DROP COLUMN dislikes_count;
+-- ALTER TABLE posts
+-- -- ADD COLUMN liked_by TEXT,
+-- -- ADD COLUMN disliked_by TEXT;
+-- DROP COLUMN dislikes_count;
+
+-- DELETE FROM posts
