@@ -92,45 +92,137 @@ app.get("/posts", (req, res) => {
   });
 });
 
-app.get('/getComments/:postId', (req, res) => {
+app.get("/getComments/:postId", (req, res) => {
   const postId = req.params.postId;
-  const sql = 'SELECT * FROM comments WHERE post_id = ?';
+  const sql = "SELECT * FROM comments WHERE post_id = ?";
   db.query(sql, [postId], (err, results) => {
-      if (err) {
-          console.error('Error fetching comments:', err);
-          return res.status(500).json({ success: false, message: 'Error fetching comments' });
-      }
-      res.json(results);
+    if (err) {
+      console.error("Error fetching comments:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Error fetching comments" });
+    }
+    res.json(results);
   });
 });
 
-app.post('/postComment', (req, res) => {
+app.post("/postComment", (req, res) => {
   const { postId, author, content } = req.body;
-  const sql = 'INSERT INTO comments (post_id, author, content) VALUES (?, ?, ?)';
+  const sql =
+    "INSERT INTO comments (post_id, author, content) VALUES (?, ?, ?)";
   db.query(sql, [postId, author, content], (err, result) => {
-      if (err) {
-          console.error('Error posting comment:', err);
-          return res.status(500).json({ success: false, message: 'Error posting comment' });
-      }
-      res.json({ success: true, message: 'Comment posted successfully' });
+    if (err) {
+      console.error("Error posting comment:", err);
+      return res
+        .status(500)
+        .json({ success: false, message: "Error posting comment" });
+    }
+    res.json({ success: true, message: "Comment posted successfully" });
   });
 });
 
-app.delete('/deletePost/:postId', (req, res) => {
+app.delete("/deletePost/:postId", (req, res) => {
   const postId = req.params.postId;
-  const username = req.body.username; // Or however you manage authentication
+  const username = req.body.username;
 
-  // You should check if the user is the author of the post here
-  const sql = 'DELETE FROM posts WHERE id = ?';
+  const sql = "DELETE FROM posts WHERE id = ?";
   db.query(sql, [postId], (err, result) => {
-      if (err) {
-          console.error('Error deleting post:', err);
-          res.status(500).send('Error deleting post');
-      } else {
-          res.send('Post deleted successfully');
-      }
+    if (err) {
+      console.error("Error deleting post:", err);
+      res.status(500).send("Error deleting post");
+    } else {
+      res.send("Post deleted successfully");
+    }
   });
 });
+
+//console.log(postId, voteType, username)
+app.post("/vote", (req, res) => {
+  const { postId, voteType, username } = req.body;
+  let sql;
+  console.log(postId, voteType, username);
+  switch (voteType) {
+    case "like":
+      sql = `
+        UPDATE posts
+        SET liked_by = JSON_ARRAY_APPEND(COALESCE(liked_by, JSON_ARRAY()), '$', ?)
+        WHERE id = ?;
+      `;
+      break;
+    case "dislike":
+      sql = `
+        UPDATE posts
+        SET disliked_by = JSON_ARRAY_APPEND(COALESCE(liked_by, JSON_ARRAY()), '$', ?)
+        WHERE id = ?;
+      `;
+      break;
+    case "unvote":
+      sql = `
+        UPDATE posts
+        SET liked_by = JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?)))
+        WHERE id = ? AND JSON_CONTAINS(liked_by, JSON_QUOTE(?));
+      `;
+      break;
+    default:
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid vote action" });
+  }
+
+  db.query(sql, [username, postId, username], (err, result) => {
+    if (err) {
+      console.error("Error updating vote:", err);
+      return res.status(500).json({ success: false, message: "Error updating vote" });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "Post not found or no changes made" });
+    }
+    res.json({ success: true, message: "Vote updated" });
+  });
+});
+
+// app.post("/vote", (req, res) => {
+//   const { postId, voteType, username } = req.body;
+//   let sql;
+//   console.log(postId, voteType, username)
+
+//   switch (voteType) {
+//     case "like":
+//       sql = `
+//       UPDATE posts
+//       SET liked_by = IF(liked_by IS NOT NULL AND JSON_CONTAINS(liked_by, ?, '$'), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))), liked_by),
+//           disliked_by = IF(disliked_by IS NOT NULL AND JSON_CONTAINS(disliked_by, ?, '$'), JSON_REMOVE(disliked_by, JSON_UNQUOTE(JSON_SEARCH(disliked_by, 'one', ?))), disliked_by)
+//       WHERE id = ?;
+//     `;
+//       break;
+//     case "dislike":
+//       sql = `
+//       UPDATE posts
+//       SET disliked_by = IF(disliked_by IS NULL, JSON_ARRAY(?), IF(JSON_CONTAINS(disliked_by, ?), disliked_by, JSON_ARRAY_APPEND(disliked_by, '$', ?))),
+//           liked_by = IF(liked_by IS NULL, JSON_ARRAY(), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))))
+//       WHERE id = ?;
+//     `;
+//       break;
+//     case "unvote":
+//       sql = `
+//         UPDATE posts
+//         SET liked_by = IF(liked_by IS NOT NULL AND JSON_CONTAINS(liked_by, ?, '$'), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))), liked_by),
+//             disliked_by = IF(disliked_by IS NOT NULL AND JSON_CONTAINS(disliked_by, ?, '$'), JSON_REMOVE(disliked_by, JSON_UNQUOTE(JSON_SEARCH(disliked_by, 'one', ?))), disliked_by)
+//         WHERE id = ?;
+//       `;
+//       break;
+//     default:
+//       return res.status(400).json({ success: false, message: "Invalid vote action" });
+//   }
+
+//   db.query(sql, [username, username, username, username, postId], (err, result) => {
+//     if (err) {
+//       console.error("Error updating vote:", err);
+//       return res.status(500).json({ success: false, message: "Error updating vote" });
+//     }
+//     res.json({ success: true, message: "Vote updated" });
+//   });
+// });
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

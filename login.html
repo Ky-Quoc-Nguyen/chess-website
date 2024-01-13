@@ -170,6 +170,24 @@
         });
     });
 
+  function sendVote(postId, voteType, username) {
+    console.log(voteType)
+    fetch("http://localhost:3000/vote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ postId: postId, voteType: voteType, username:username }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Vote registered:", data.message);
+        } else {
+          console.error("Error voting:", data.message);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }
+
   function displayPosts(posts) {
     const postsContainer = document.getElementById("postsContainer");
     postsContainer.innerHTML = "";
@@ -194,15 +212,23 @@
       upvoteButton.className = "vote-button upvote";
       upvoteButton.innerHTML = "&#8679;";
       upvoteButton.onclick = function (e) {
-        e.stopPropagation(); // Prevent opening the modal when clicking on vote
-        this.classList.toggle("upvote-active");
-
+        e.stopPropagation(); // Prevent opening the modal when clicking on vote\
+        if (upvoteButton && upvoteButton.classList.contains("upvote-active")) {
+          console.log("ALREADY ACTIVE... turning off");
+          this.classList.toggle("upvote-active");
+          sendVote(post.id, "unvote",sessionStorage.getItem("username")); // Send 'like' vote
+        } else {
+          console.log("NOT ACTIVE... sending vote");
+          this.classList.toggle("upvote-active");
+          sendVote(post.id, "like",sessionStorage.getItem("username")); // Send 'like' vote
+        }
         // If downvote is active on this post, remove it
         const downvoteButton = this.parentNode.querySelector(".downvote");
         if (
           downvoteButton &&
           downvoteButton.classList.contains("downvote-active")
         ) {
+          console.log("Disabling the other one.... activating current one");
           downvoteButton.classList.remove("downvote-active");
         }
       };
@@ -213,11 +239,19 @@
       downvoteButton.innerHTML = "&#8681;";
       downvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
-        this.classList.toggle("downvote-active");
-
+        if (downvoteButton && downvoteButton.classList.contains("downvote-active")) {
+          console.log("ALREADY ACTIVE... turning off");
+          this.classList.toggle("downvote-active");
+          sendVote(post.id, "unvote",sessionStorage.getItem("username")); // Send 'like' vote
+        } else {
+          console.log("NOT ACTIVE... sending vote");
+          this.classList.toggle("downvote-active");
+          sendVote(post.id, "dislike",sessionStorage.getItem("username")); // Send 'dislike' vote
+        }
         // If upvote is active on this post, remove it
         const upvoteButton = this.parentNode.querySelector(".upvote");
         if (upvoteButton && upvoteButton.classList.contains("upvote-active")) {
+          console.log("Disabling the other one.... activating current one");
           upvoteButton.classList.remove("upvote-active");
         }
       };
@@ -605,10 +639,10 @@
 
   .post:before {
     content: "";
-    width: 100%;
+    width: 95%;
     height: 100%;
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
     background: linear-gradient(transparent 150px, white);
   }
@@ -892,8 +926,8 @@
     flex-direction: column;
     align-items: center;
     padding: 10px; /* Space around voting buttons */
-    background-color: #f8f8f8; /* Example background color */
-    z-index: 1;
+    background-color: #f8f9fa; /* Example background color */
+    /* z-index: 1; */
     border-radius: 5px;
   }
 

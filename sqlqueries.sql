@@ -26,6 +26,12 @@
 -- INSERT INTO posts (title, content, author) VALUES ('What the hell', 'bro this shit is so lit', 'Peter');
 
 -- INSERT INTO comments (post_id, author, content) VALUES (20, 'CommentAuthor', 'Comment content here');
+
+-- ALTER TABLE posts
+-- ADD COLUMN likes_count INT DEFAULT 0,
+-- ADD COLUMN dislikes_count INT DEFAULT 0;
+
 ALTER TABLE posts
-ADD COLUMN likes_count INT DEFAULT 0,
-ADD COLUMN dislikes_count INT DEFAULT 0;
+-- ADD COLUMN liked_by TEXT,
+-- ADD COLUMN disliked_by TEXT;
+DROP COLUMN dislikes_count;
