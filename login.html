@@ -66,9 +66,7 @@
     <!-- Sorting Bar -->
     <div id="sortingBar" class="sorting-bar">
       <button id="sortByLikes" class="sort-button">Most Liked</button>
-      <button id="sortByRecent" class="sort-button sort-button-active">
-        Most Recent
-      </button>
+      <button id="sortByRecent" class="sort-button">Most Recent</button>
     </div>
 
     <div id="postsContainer">
@@ -107,6 +105,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     const username = sessionStorage.getItem("username");
     console.log("Retrieved username:", username);
+    const savedSortType = localStorage.getItem("sortType") || "likes";
+    fetchAndDisplayPosts(savedSortType);
+    setActiveSortButton(savedSortType);
+
+    if (signOutButton) {
+    signOutButton.addEventListener("click", () => {
+      // Clear user session and sorting preference
+      sessionStorage.clear();
+      localStorage.removeItem("sortType"); // Clear sorting preference
+    });
+  }
 
     if (username) {
       document.getElementById("username").textContent = username;
@@ -130,9 +139,7 @@
         }
       }
     };
-  });
 
-  document.addEventListener("DOMContentLoaded", () => {
     const loginbutton = document.getElementById("signOutButton");
     if (loginbutton) {
       loginbutton.addEventListener("click", () => {
@@ -140,6 +147,8 @@
         window.location.href = "index.html";
       });
     }
+
+    setupSortingEventListeners();
   });
 
   document
@@ -410,8 +419,16 @@
     });
   }
 
-  function fetchAndDisplayPosts() {
-    fetch("http://localhost:3000/posts")
+  function fetchAndDisplayPosts(sortType) {
+    // Modify the fetch URL or parameters based on the sortType
+    let url = "http://localhost:3000/posts";
+    if (sortType === "recent") {
+      url += "?sort=recent"; // Adjust the query as per your API requirements
+    } else if (sortType === "likes") {
+      url += "?sort=likes"; // Adjust the query as per your API requirements
+    }
+
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -560,6 +577,45 @@
     }
   }
 
+  function setupSortingEventListeners() {
+    document
+      .getElementById("sortByLikes")
+      .addEventListener("click", function () {
+        fetchAndDisplayPosts("likes");
+        setActiveSortButton("likes");
+        localStorage.setItem("sortType", "likes"); // Save preference
+      });
+
+    document
+      .getElementById("sortByRecent")
+      .addEventListener("click", function () {
+        fetchAndDisplayPosts("recent");
+        setActiveSortButton("recent");
+        localStorage.setItem("sortType", "recent"); // Save preference
+      });
+  }
+
+  function setActiveSortButton(sortType) {
+    // Remove active class from both buttons
+    document
+      .getElementById("sortByLikes")
+      .classList.remove("sort-button-active");
+    document
+      .getElementById("sortByRecent")
+      .classList.remove("sort-button-active");
+
+    // Add active class based on sortType
+    if (sortType === "likes") {
+      document
+        .getElementById("sortByLikes")
+        .classList.add("sort-button-active");
+    } else if (sortType === "recent") {
+      document
+        .getElementById("sortByRecent")
+        .classList.add("sort-button-active");
+    }
+  }
+
   function timeSince(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
     let interval = seconds / 31536000;
@@ -592,7 +648,7 @@
     document.getElementById("postModal").style.display = "none";
   };
 
-  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
+  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts());
 </script>
 
 <!-- STYLEEEEE -->
@@ -1067,27 +1123,27 @@
   }
 
   .vote-button:hover {
-    background-color: #cccccc; /* Gray background on hover */
-    border-radius: 5px; /* Optional: rounded corners for the background */
+    background-color: #cccccc;
+    border-radius: 5px;
   }
 
   .upvote-active {
-    color: rgb(94, 196, 255); /* Change to your preferred shade of blue */
+    color: rgb(94, 196, 255);
     font-size: 35px;
   }
 
   .downvote-active {
-    color: rgb(255, 159, 223); /* Change to your preferred shade of red */
+    color: rgb(255, 159, 223);
     font-size: 35px;
   }
 
   .vote-count-up {
-    color: rgb(94, 196, 255); /* or any color you prefer for upvotes */
+    color: rgb(94, 196, 255);
     font-size: large;
   }
 
   .vote-count-down {
-    color: rgb(255, 159, 223); /* or any color you prefer for downvotes */
+    color: rgb(255, 159, 223);
     font-size: large;
   }
 </style>

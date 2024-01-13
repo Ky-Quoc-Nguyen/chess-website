@@ -82,15 +82,30 @@ app.post("/posts", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  const sql = "SELECT id, title, content, author,created_at,liked_by,disliked_by FROM posts"; // Select only id and title
+  const sort = req.query.sort;
+  let sql = "SELECT id, title, content, author, created_at, liked_by, disliked_by, ";
+  sql += "(JSON_LENGTH(COALESCE(liked_by, JSON_ARRAY())) - JSON_LENGTH(COALESCE(disliked_by, JSON_ARRAY()))) AS like_diff ";
+  sql += "FROM posts ";
+
+
+  if (sort === 'likes') {
+    console.log("likes")
+    sql += "ORDER BY like_diff ASC"; // Order by vote difference in decreasing order
+  } else if (sort === 'recent') {
+    console.log("recent")
+    sql += "ORDER BY created_at ASC"; // Order by most recent
+  }
+
   db.query(sql, (err, results) => {
     if (err) {
-      console.error("Database error during fetching posts:", err);
+      console.error("Error during fetching posts:", err);
       return res.status(500).send("Error fetching posts");
     }
     res.json(results);
   });
 });
+
+
 
 app.get("/getComments/:postId", (req, res) => {
   const postId = req.params.postId;
