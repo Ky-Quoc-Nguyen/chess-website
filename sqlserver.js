@@ -82,7 +82,7 @@ app.post("/posts", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  const sql = "SELECT id, title, content, author,created_at FROM posts"; // Select only id and title
+  const sql = "SELECT id, title, content, author,created_at,liked_by,disliked_by FROM posts"; // Select only id and title
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Database error during fetching posts:", err);
@@ -191,49 +191,6 @@ app.post("/vote", (req, res) => {
     res.json({ success: true, message: "Vote updated" });
   });
 });
-
-// app.post("/vote", (req, res) => {
-//   const { postId, voteType, username } = req.body;
-//   let sql;
-//   console.log(postId, voteType, username)
-
-//   switch (voteType) {
-//     case "like":
-//       sql = `
-//       UPDATE posts
-//       SET liked_by = IF(liked_by IS NOT NULL AND JSON_CONTAINS(liked_by, ?, '$'), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))), liked_by),
-//           disliked_by = IF(disliked_by IS NOT NULL AND JSON_CONTAINS(disliked_by, ?, '$'), JSON_REMOVE(disliked_by, JSON_UNQUOTE(JSON_SEARCH(disliked_by, 'one', ?))), disliked_by)
-//       WHERE id = ?;
-//     `;
-//       break;
-//     case "dislike":
-//       sql = `
-//       UPDATE posts
-//       SET disliked_by = IF(disliked_by IS NULL, JSON_ARRAY(?), IF(JSON_CONTAINS(disliked_by, ?), disliked_by, JSON_ARRAY_APPEND(disliked_by, '$', ?))),
-//           liked_by = IF(liked_by IS NULL, JSON_ARRAY(), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))))
-//       WHERE id = ?;
-//     `;
-//       break;
-//     case "unvote":
-//       sql = `
-//         UPDATE posts
-//         SET liked_by = IF(liked_by IS NOT NULL AND JSON_CONTAINS(liked_by, ?, '$'), JSON_REMOVE(liked_by, JSON_UNQUOTE(JSON_SEARCH(liked_by, 'one', ?))), liked_by),
-//             disliked_by = IF(disliked_by IS NOT NULL AND JSON_CONTAINS(disliked_by, ?, '$'), JSON_REMOVE(disliked_by, JSON_UNQUOTE(JSON_SEARCH(disliked_by, 'one', ?))), disliked_by)
-//         WHERE id = ?;
-//       `;
-//       break;
-//     default:
-//       return res.status(400).json({ success: false, message: "Invalid vote action" });
-//   }
-
-//   db.query(sql, [username, username, username, username, postId], (err, result) => {
-//     if (err) {
-//       console.error("Error updating vote:", err);
-//       return res.status(500).json({ success: false, message: "Error updating vote" });
-//     }
-//     res.json({ success: true, message: "Vote updated" });
-//   });
-// });
 
 app.listen(3000, () => {
   console.log("Server running on port 3000");

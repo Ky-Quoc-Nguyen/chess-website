@@ -175,7 +175,11 @@
     fetch("http://localhost:3000/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ postId: postId, voteType: voteType, username:username }),
+      body: JSON.stringify({
+        postId: postId,
+        voteType: voteType,
+        username: username,
+      }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -203,6 +207,16 @@
       const infoContainer = document.createElement("div");
       infoContainer.className = "info-container";
 
+      // Calculate the vote difference
+      const likes = JSON.parse(post.liked_by || "[]").length;
+      const dislikes = JSON.parse(post.disliked_by || "[]").length;
+      const voteDifference = likes - dislikes;
+
+      // VOTE DIFFERENCE
+      const voteCountSpan = document.createElement("span");
+      voteCountSpan.textContent = voteDifference;
+      voteCountSpan.className = "vote-count";
+
       // Voting container
       const votingContainer = document.createElement("div");
       votingContainer.className = "voting-container";
@@ -216,11 +230,11 @@
         if (upvoteButton && upvoteButton.classList.contains("upvote-active")) {
           console.log("ALREADY ACTIVE... turning off sending unvoteUP");
           this.classList.toggle("upvote-active");
-          sendVote(post.id, "unvoteUP",sessionStorage.getItem("username")); // Send unvote AFTER UPVOTE
+          sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote AFTER UPVOTE
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("upvote-active");
-          sendVote(post.id, "like",sessionStorage.getItem("username")); // Send 'like' vote
+          sendVote(post.id, "like", sessionStorage.getItem("username")); // Send 'like' vote
         }
         // If downvote is active on this post, remove it
         const downvoteButton = this.parentNode.querySelector(".downvote");
@@ -228,11 +242,13 @@
           downvoteButton &&
           downvoteButton.classList.contains("downvote-active")
         ) {
-          console.log("Disabling the downvote.... activating upvote sending changeD2U");
+          console.log(
+            "Disabling the downvote.... activating upvote sending changeD2U"
+          );
           downvoteButton.classList.remove("downvote-active");
-          sendVote(post.id, "unvoteDOWN",sessionStorage.getItem("username")); // Send unvote DOWN
-          sendVote(post.id, "like",sessionStorage.getItem("username")); // Send 'like' vote
-          sendVote(post.id, "unvoteUP",sessionStorage.getItem("username")); // Send unvote DOWN
+          sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
+          sendVote(post.id, "like", sessionStorage.getItem("username")); // Send 'like' vote
+          sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote DOWN
         }
       };
 
@@ -242,23 +258,28 @@
       downvoteButton.innerHTML = "&#8681;";
       downvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
-        if (downvoteButton && downvoteButton.classList.contains("downvote-active")) {
+        if (
+          downvoteButton &&
+          downvoteButton.classList.contains("downvote-active")
+        ) {
           console.log("ALREADY ACTIVE... turning off sending unvoteDOWN");
           this.classList.toggle("downvote-active");
-          sendVote(post.id, "unvoteDOWN",sessionStorage.getItem("username")); // Send unvote DOWN
+          sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("downvote-active");
-          sendVote(post.id, "dislike",sessionStorage.getItem("username")); // Send 'dislike' vote
+          sendVote(post.id, "dislike", sessionStorage.getItem("username")); // Send 'dislike' vote
         }
         // If upvote is active on this post, remove it
         const upvoteButton = this.parentNode.querySelector(".upvote");
         if (upvoteButton && upvoteButton.classList.contains("upvote-active")) {
-          console.log("Disabling upvote.... activating downvote sending changeU2D");
+          console.log(
+            "Disabling upvote.... activating downvote sending changeU2D"
+          );
           upvoteButton.classList.remove("upvote-active");
-          sendVote(post.id, "unvoteUP",sessionStorage.getItem("username")); // Send unvote DOWN
-          sendVote(post.id, "dislike",sessionStorage.getItem("username")); // Send 'like' vote
-          sendVote(post.id, "unvoteDOWN",sessionStorage.getItem("username")); // Send unvote DOWN
+          sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote DOWN
+          sendVote(post.id, "dislike", sessionStorage.getItem("username")); // Send 'like' vote
+          sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
         }
       };
 
@@ -314,6 +335,8 @@
       postDiv.appendChild(content);
 
       votingContainer.appendChild(upvoteButton);
+
+      votingContainer.appendChild(voteCountSpan);
       votingContainer.appendChild(downvoteButton);
 
       postsContainer.appendChild(postDiv);
