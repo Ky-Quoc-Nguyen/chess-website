@@ -207,15 +207,10 @@
       const infoContainer = document.createElement("div");
       infoContainer.className = "info-container";
 
-      // Calculate the vote difference
-      const likes = JSON.parse(post.liked_by || "[]").length;
-      const dislikes = JSON.parse(post.disliked_by || "[]").length;
-      const voteDifference = likes - dislikes;
-
-      // VOTE DIFFERENCE
       const voteCountSpan = document.createElement("span");
-      voteCountSpan.textContent = voteDifference;
+      voteCountSpan.id = `vote-count-${post.id}`; // Unique ID for each post's vote count
       voteCountSpan.className = "vote-count";
+      voteCountSpan.textContent = calculateVoteDifference(post);
 
       // Voting container
       const votingContainer = document.createElement("div");
@@ -227,14 +222,22 @@
       upvoteButton.innerHTML = "&#8679;";
       upvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote\
+        const voteCountSpan = document.getElementById(`vote-count-${post.id}`);
+        let voteDifference = parseInt(voteCountSpan.textContent);
+
         if (upvoteButton && upvoteButton.classList.contains("upvote-active")) {
+          const voteCountSpan = document.getElementById(
+            `vote-count-${post.id}`
+          );
           console.log("ALREADY ACTIVE... turning off sending unvoteUP");
           this.classList.toggle("upvote-active");
           sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote AFTER UPVOTE
+          voteDifference -= 1; // inc vote count
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("upvote-active");
           sendVote(post.id, "like", sessionStorage.getItem("username")); // Send 'like' vote
+          voteDifference += 1; // inc vote count
         }
         // If downvote is active on this post, remove it
         const downvoteButton = this.parentNode.querySelector(".downvote");
@@ -249,7 +252,9 @@
           sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
           sendVote(post.id, "like", sessionStorage.getItem("username")); // Send 'like' vote
           sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote DOWN
+          voteDifference += 1; // inc vote count
         }
+        voteCountSpan.textContent = voteDifference.toString();
       };
 
       // Downvote button
@@ -258,6 +263,9 @@
       downvoteButton.innerHTML = "&#8681;";
       downvoteButton.onclick = function (e) {
         e.stopPropagation(); // Prevent opening the modal when clicking on vote
+        const voteCountSpan = document.getElementById(`vote-count-${post.id}`);
+        let voteDifference = parseInt(voteCountSpan.textContent);
+
         if (
           downvoteButton &&
           downvoteButton.classList.contains("downvote-active")
@@ -265,10 +273,12 @@
           console.log("ALREADY ACTIVE... turning off sending unvoteDOWN");
           this.classList.toggle("downvote-active");
           sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
+          voteDifference += 1; // inc vote count
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("downvote-active");
           sendVote(post.id, "dislike", sessionStorage.getItem("username")); // Send 'dislike' vote
+          voteDifference -= 1; // inc vote count
         }
         // If upvote is active on this post, remove it
         const upvoteButton = this.parentNode.querySelector(".upvote");
@@ -280,7 +290,9 @@
           sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote DOWN
           sendVote(post.id, "dislike", sessionStorage.getItem("username")); // Send 'like' vote
           sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
+          voteDifference -= 1; // inc vote count
         }
+        voteCountSpan.textContent = voteDifference.toString();
       };
 
       // Content container
@@ -469,6 +481,25 @@
       .catch((error) => {
         console.error("Error deleting post:", error);
       });
+  }
+
+  function calculateVoteDifference(post) {
+    const likes = JSON.parse(post.liked_by || "[]").length;
+    const dislikes = JSON.parse(post.disliked_by || "[]").length;
+    return likes - dislikes;
+  }
+
+  function updateVoteCount(postId) {
+    const voteCountSpan = document.getElementById(`vote-count-${postId}`);
+    if (voteCountSpan) {
+      // Re-fetch the specific post data or pass it if already available
+      fetch(`http://localhost:3000/posts/${postId}`)
+        .then((response) => response.json())
+        .then((post) => {
+          voteCountSpan.textContent = calculateVoteDifference(post);
+        })
+        .catch((error) => console.error("Error fetching post:", error));
+    }
   }
 
   function timeSince(date) {
@@ -660,6 +691,8 @@
     display: flex;
     border: 1px solid #ccc; /* Example border */
     margin-bottom: 10px; /* Space between posts */
+    gap: 16px; /* Adjust the gap size as needed */
+    border-radius: 5px;
   }
 
   .post:hover {
@@ -955,10 +988,14 @@
     flex-direction: column;
     align-items: center;
     padding: 10px; /* Space around voting buttons */
-    background-color: #f8f9fa; /* Example background color */
+    background-color: #eef0f0; /* Example background color */
     /* z-index: 1; */
-    border-radius: 5px;
+    margin-left: -10px; /* Adjust this value to move the panel to the left */
+    height: 100%; /* Stretch to fill the container vertically */
+    padding-top: 0; /* Remove any padding at the top */
+    padding-bottom: 0; /* Remove any padding at the bottom */
   }
+
 
   .vote-button {
     background: none;
