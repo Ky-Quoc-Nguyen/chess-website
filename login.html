@@ -6,6 +6,13 @@
       .commentcomment
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!-- userPanel -->
@@ -172,7 +179,7 @@
             .get("postBody")
             .replace(
               /\[img\]/g,
-              `<br><img src="${imageUrl}" alt="User image">`
+              `<br><img src="${imageUrl}" alt="User image"><br>`
             ),
           author: username,
         }),
@@ -234,7 +241,7 @@
 
       const voteCountSpan = document.createElement("span");
       voteCountSpan.id = `vote-count-${post.id}`; // Unique ID for each post's vote count
-      voteCountSpan.className = "vote-count";
+      // voteCountSpan.className = "vote-count";
       voteCountSpan.textContent = calculateVoteDifference(post);
 
       // Parse liked_by and disliked_by as arrays
@@ -255,6 +262,7 @@
       upvoteButton.innerHTML = "&#8679;";
 
       if (userHasLiked) {
+        voteCountSpan.className = "vote-count-up";
         upvoteButton.classList.add("upvote-active");
       }
       upvoteButton.onclick = function (e) {
@@ -269,11 +277,13 @@
           console.log("ALREADY ACTIVE... turning off sending unvoteUP");
           this.classList.toggle("upvote-active");
           sendVote(post.id, "unvoteUP", sessionStorage.getItem("username")); // Send unvote AFTER UPVOTE
+          voteCountSpan.className = "vote-count";
           voteDifference -= 1; // inc vote count
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("upvote-active");
           sendVote(post.id, "like", sessionStorage.getItem("username")); // Send 'like' vote
+          voteCountSpan.className = "vote-count-up";
           voteDifference += 1; // inc vote count
         }
         // If downvote is active on this post, remove it
@@ -301,6 +311,7 @@
 
       if (userHasDisliked) {
         downvoteButton.classList.add("downvote-active");
+        voteCountSpan.className = "vote-count-down";
       }
 
       downvoteButton.onclick = function (e) {
@@ -315,12 +326,14 @@
           console.log("ALREADY ACTIVE... turning off sending unvoteDOWN");
           this.classList.toggle("downvote-active");
           sendVote(post.id, "unvoteDOWN", sessionStorage.getItem("username")); // Send unvote DOWN
+          voteCountSpan.className = "vote-count";
           voteDifference += 1; // inc vote count
         } else {
           console.log("NOT ACTIVE... sending vote");
           this.classList.toggle("downvote-active");
           sendVote(post.id, "dislike", sessionStorage.getItem("username")); // Send 'dislike' vote
-          voteDifference -= 1; // inc vote count
+          voteCountSpan.className = "vote-count-down";
+          voteDifference -= 1; // dec vote count
         }
         // If upvote is active on this post, remove it
         const upvoteButton = this.parentNode.querySelector(".upvote");
@@ -573,11 +586,6 @@
     return Math.floor(seconds) + " seconds";
   }
 
-  function replaceImageURLsWithTags(text) {
-    const urlRegex = /(https?:\/\/[^\s]+\.(jpg|jpeg|png|gif))/gi;
-    return text.replace(urlRegex, '<img src="$1" alt="Embedded Image" />');
-  }
-
   var span = document.getElementsByClassName("close")[0];
 
   span.onclick = function () {
@@ -591,6 +599,7 @@
 <style>
   body {
     background-color: #dae0e6;
+    font-family: "Open Sans", sans-serif;
   }
 
   .user-panel {
@@ -731,7 +740,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 80%;
     max-width: 800px;
-    max-height: 300px;
+    max-height: 500px;
     overflow: hidden;
     /* text-color:linear-gradient(transparent 150px, white); */
     word-wrap: break-word;
@@ -756,7 +765,7 @@
     position: absolute;
     right: 0;
     top: 0;
-    background: linear-gradient(transparent 150px, white);
+    background: linear-gradient(transparent 350px, white);
   }
 
   .post-title {
@@ -1070,5 +1079,15 @@
   .downvote-active {
     color: rgb(255, 159, 223); /* Change to your preferred shade of red */
     font-size: 35px;
+  }
+
+  .vote-count-up {
+    color: rgb(94, 196, 255); /* or any color you prefer for upvotes */
+    font-size: large;
+  }
+
+  .vote-count-down {
+    color: rgb(255, 159, 223); /* or any color you prefer for downvotes */
+    font-size: large;
   }
 </style>
