@@ -74,7 +74,13 @@
         </button>
         <div class="search-container">
           <i class="fa fa-search"></i>
-          <input type="search" id="searchField" placeholder="Search" />
+          <input
+            type="search"
+            id="searchField"
+            placeholder="Search"
+            oninput="toggleClearButton()"
+          />
+          <button onclick="clearSearch()" class="clear-search">&times;</button>
         </div>
       </div>
     </div>
@@ -403,9 +409,9 @@
       time.className = "post-time";
       const author = document.createElement("p");
       author.className = "post-author";
-      author.innerHTML = `<span class="post-time">Posted by ${
+      author.innerHTML = `<span class="post-time">Posted by <span class="post-name"> ${
         post.author
-      } ${timeSince(
+      }</span> ${timeSince(
         createdAtDate
       )} ago</span><br><br><br><span class="post-title">${
         post.title
@@ -429,7 +435,7 @@
     });
   }
 
-  function fetchAndDisplayPosts(sortType,searchTerm = "") {
+  function fetchAndDisplayPosts(sortType, searchTerm = "") {
     // Modify the fetch URL or parameters based on the sortType
     let url = "http://localhost:3000/posts";
     if (sortType === "recent") {
@@ -652,6 +658,25 @@
       return Math.floor(interval) + " minutes";
     }
     return Math.floor(seconds) + " seconds";
+  }
+
+  function toggleClearButton() {
+    var searchInput = document.getElementById("searchField");
+    var clearBtn = document.querySelector(".clear-search");
+    // If there's text in the input field, show the clear button
+    if (searchInput.value.length > 0) {
+      clearBtn.style.display = "block";
+    } else {
+      clearBtn.style.display = "none";
+    }
+  }
+
+  function clearSearch() {
+    var searchInput = document.getElementById("searchField");
+    searchInput.value = ""; // Clear the search field
+    toggleClearButton(); // Hide the clear button
+    searchInput.focus(); // Optional: bring focus back to the search field
+    // Optional: Add any additional logic you want to execute when search is cleared
   }
 
   document.getElementById("searchField").addEventListener("input", function () {
@@ -968,6 +993,10 @@
     transform: translateY(2px);
   }
 
+  .post-name {
+    color: #174ea6;
+  }
+
   /* Delete icon styling */
 
   .delete-icon {
@@ -1261,6 +1290,8 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     background-color: #fff;
     width: fit-content;
+    position: relative;
+    left: 10px; /* Adjust the value as needed */
   }
 
   .search-container input[type="search"] {
@@ -1289,5 +1320,25 @@
     background-position: 1px center; /* Position the icon */
     background-size: 16px; /* Size of the icon */
     border-radius: 24px;
+  }
+
+  .clear-search {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: absolute;
+    right: 0.01px; 
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; 
+    font-size: 20px;
+  }
+
+  .search-container input:not(:placeholder-shown) + .clear-search {
+    display: block;
+  }
+
+  .search-container input {
+    padding-right: 30px;
   }
 </style>
