@@ -66,12 +66,16 @@
     <!-- Sorting Bar -->
     <div id="sortingBar" class="sorting-bar">
       <div class="button-container">
-        <button id="sortByLikes" class="sort-button"><i class="fa fa-fire"></i> &nbsp Best</button>
-        <button id="sortByRecent" class="sort-button"><i class="fa fa-clock"></i>&nbsp New</button>
+        <button id="sortByLikes" class="sort-button">
+          <i class="fa fa-fire"></i> &nbsp Best
+        </button>
+        <button id="sortByRecent" class="sort-button">
+          <i class="fa fa-clock"></i>&nbsp New
+        </button>
         <div class="search-container">
           <i class="fa fa-search"></i>
           <input type="search" id="searchField" placeholder="Search" />
-      </div>
+        </div>
       </div>
     </div>
 
@@ -425,13 +429,15 @@
     });
   }
 
-  function fetchAndDisplayPosts(sortType) {
+  function fetchAndDisplayPosts(sortType,searchTerm = "") {
     // Modify the fetch URL or parameters based on the sortType
     let url = "http://localhost:3000/posts";
     if (sortType === "recent") {
       url += "?sort=recent"; // Adjust the query as per your API requirements
     } else if (sortType === "likes") {
       url += "?sort=likes"; // Adjust the query as per your API requirements
+    } else if (sortType === "search" && searchTerm) {
+      url += `?search=${encodeURIComponent(searchTerm)}`;
     }
 
     fetch(url)
@@ -647,6 +653,11 @@
     }
     return Math.floor(seconds) + " seconds";
   }
+
+  document.getElementById("searchField").addEventListener("input", function () {
+    const searchTerm = this.value;
+    fetchAndDisplayPosts("search", searchTerm);
+  });
 
   var span = document.getElementsByClassName("close")[0];
 
@@ -1093,39 +1104,40 @@
   }
 
   .sort-button {
-  align-items: center;
-  appearance: none;
-  background-color: #fff;
-  border-radius: 24px;
-  border-style: none;
-  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
-  box-sizing: border-box;
-  color: #3c4043;
-  cursor: pointer;
-  display: inline-flex;
-  fill: currentcolor;
-  font-family: "Google Sans",Roboto,Arial,sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  height: 30px;
-  justify-content: center;
-  letter-spacing: .25px;
-  line-height: normal;
-  max-width: 100%;
-  overflow: visible;
-  padding: 2px 10px;
-  position: relative;
-  text-align: center;
-  text-transform: none;
-  transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 80px;
-  will-change: transform,opacity;
-  z-index: 0;
-}
-
+    align-items: center;
+    appearance: none;
+    background-color: #fff;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+      rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+    box-sizing: border-box;
+    color: #3c4043;
+    cursor: pointer;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    height: 30px;
+    justify-content: center;
+    letter-spacing: 0.25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    padding: 2px 10px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 80px;
+    will-change: transform, opacity;
+    z-index: 0;
+  }
 
   .sort-button-active {
     background-color: #d4d4d4; /* Slightly darker to indicate active state */
@@ -1171,7 +1183,6 @@
     box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
       rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
   }
-
 
   /* updown vote button */
   .voting-container {
@@ -1247,12 +1258,12 @@
     border: 1px solid #ccc;
     border-radius: 24px;
     padding: 4px 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     background-color: #fff;
     width: fit-content;
-}
+  }
 
-.search-container input[type="search"] {
+  .search-container input[type="search"] {
     border: none;
     outline: none;
     padding: 8px;
@@ -1260,17 +1271,17 @@
     font-size: 16px;
     width: 240px; /* Adjust the width as needed */
     height: 10px;
-}
+  }
 
-.search-container input[type="search"]::placeholder {
+  .search-container input[type="search"]::placeholder {
     color: #999;
-}
+  }
 
-.search-container input[type="search"] {
+  .search-container input[type="search"] {
     padding-left: 5px;
-}
+  }
 
-.search-container input[type="search"] {
+  .search-container input[type="search"] {
     border: none;
     outline: none;
     font-size: 16px;
@@ -1278,5 +1289,5 @@
     background-position: 1px center; /* Position the icon */
     background-size: 16px; /* Size of the icon */
     border-radius: 24px;
-}
+  }
 </style>

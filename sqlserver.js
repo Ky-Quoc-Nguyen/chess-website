@@ -87,6 +87,11 @@ app.get("/posts", (req, res) => {
   sql += "(JSON_LENGTH(COALESCE(liked_by, JSON_ARRAY())) - JSON_LENGTH(COALESCE(disliked_by, JSON_ARRAY()))) AS like_diff ";
   sql += "FROM posts ";
 
+  const search = req.query.search;
+  if (search) {
+    sql += "WHERE title LIKE CONCAT('%', ?, '%') OR content LIKE CONCAT('%', ?, '%') ";
+  }
+
 
   if (sort === 'likes') {
     console.log("likes")
@@ -96,7 +101,13 @@ app.get("/posts", (req, res) => {
     sql += "ORDER BY created_at ASC"; // Order by most recent
   }
 
-  db.query(sql, (err, results) => {
+  // Prepare the query parameters
+  const queryParameters = [];
+  if (search) {
+    queryParameters.push(search, search);
+  }
+
+  db.query(sql, queryParameters, (err, results) => {
     if (err) {
       console.error("Error during fetching posts:", err);
       return res.status(500).send("Error fetching posts");
