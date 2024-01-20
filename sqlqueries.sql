@@ -37,4 +37,6 @@
 -- DROP COLUMN dislikes_count;
 
 -- DELETE FROM comments
-DELETE FROM posts
+-- DELETE FROM posts
+
+-- DELETE FROM posts WHERE created_at < NOW() - INTERVAL 10 HOUR;

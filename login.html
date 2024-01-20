@@ -65,10 +65,24 @@
 
     <!-- Sorting Bar -->
     <div id="sortingBar" class="sorting-bar">
-      <button id="sortByLikes" class="sort-button">Most Liked</button>
-      <button id="sortByRecent" class="sort-button sort-button-active">
-        Most Recent
-      </button>
+      <div class="button-container">
+        <button id="sortByLikes" class="sort-button">
+          <i class="fa fa-fire"></i> &nbsp Best
+        </button>
+        <button id="sortByRecent" class="sort-button">
+          <i class="fa fa-clock"></i>&nbsp New
+        </button>
+        <div class="search-container">
+          <i class="fa fa-search"></i>
+          <input
+            type="search"
+            id="searchField"
+            placeholder="Search"
+            oninput="toggleClearButton()"
+          />
+          <button onclick="clearSearch()" class="clear-search">&times;</button>
+        </div>
+      </div>
     </div>
 
     <div id="postsContainer">
@@ -107,6 +121,17 @@
   document.addEventListener("DOMContentLoaded", () => {
     const username = sessionStorage.getItem("username");
     console.log("Retrieved username:", username);
+    const savedSortType = localStorage.getItem("sortType") || "likes";
+    fetchAndDisplayPosts(savedSortType);
+    setActiveSortButton(savedSortType);
+
+    if (signOutButton) {
+      signOutButton.addEventListener("click", () => {
+        // Clear user session and sorting preference
+        sessionStorage.clear();
+        localStorage.removeItem("sortType"); // Clear sorting preference
+      });
+    }
 
     if (username) {
       document.getElementById("username").textContent = username;
@@ -130,9 +155,7 @@
         }
       }
     };
-  });
 
-  document.addEventListener("DOMContentLoaded", () => {
     const loginbutton = document.getElementById("signOutButton");
     if (loginbutton) {
       loginbutton.addEventListener("click", () => {
@@ -140,6 +163,8 @@
         window.location.href = "index.html";
       });
     }
+
+    setupSortingEventListeners();
   });
 
   document
@@ -384,9 +409,9 @@
       time.className = "post-time";
       const author = document.createElement("p");
       author.className = "post-author";
-      author.innerHTML = `<span class="post-time">Posted by ${
+      author.innerHTML = `<span class="post-time">Posted by <span class="post-name"> ${
         post.author
-      } ${timeSince(
+      }</span> ${timeSince(
         createdAtDate
       )} ago</span><br><br><br><span class="post-title">${
         post.title
@@ -410,8 +435,18 @@
     });
   }
 
-  function fetchAndDisplayPosts() {
-    fetch("http://localhost:3000/posts")
+  function fetchAndDisplayPosts(sortType, searchTerm = "") {
+    // Modify the fetch URL or parameters based on the sortType
+    let url = "http://localhost:3000/posts";
+    if (sortType === "recent") {
+      url += "?sort=recent"; // Adjust the query as per your API requirements
+    } else if (sortType === "likes") {
+      url += "?sort=likes"; // Adjust the query as per your API requirements
+    } else if (sortType === "search" && searchTerm) {
+      url += `?search=${encodeURIComponent(searchTerm)}`;
+    }
+
+    fetch(url)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -560,6 +595,45 @@
     }
   }
 
+  function setupSortingEventListeners() {
+    document
+      .getElementById("sortByLikes")
+      .addEventListener("click", function () {
+        fetchAndDisplayPosts("likes");
+        setActiveSortButton("likes");
+        localStorage.setItem("sortType", "likes"); // Save preference
+      });
+
+    document
+      .getElementById("sortByRecent")
+      .addEventListener("click", function () {
+        fetchAndDisplayPosts("recent");
+        setActiveSortButton("recent");
+        localStorage.setItem("sortType", "recent"); // Save preference
+      });
+  }
+
+  function setActiveSortButton(sortType) {
+    // Remove active class from both buttons
+    document
+      .getElementById("sortByLikes")
+      .classList.remove("sort-button-active");
+    document
+      .getElementById("sortByRecent")
+      .classList.remove("sort-button-active");
+
+    // Add active class based on sortType
+    if (sortType === "likes") {
+      document
+        .getElementById("sortByLikes")
+        .classList.add("sort-button-active");
+    } else if (sortType === "recent") {
+      document
+        .getElementById("sortByRecent")
+        .classList.add("sort-button-active");
+    }
+  }
+
   function timeSince(date) {
     const seconds = Math.floor((new Date() - date) / 1000);
     let interval = seconds / 31536000;
@@ -586,13 +660,37 @@
     return Math.floor(seconds) + " seconds";
   }
 
+  function toggleClearButton() {
+    var searchInput = document.getElementById("searchField");
+    var clearBtn = document.querySelector(".clear-search");
+    // If there's text in the input field, show the clear button
+    if (searchInput.value.length > 0) {
+      clearBtn.style.display = "block";
+    } else {
+      clearBtn.style.display = "none";
+    }
+  }
+
+  function clearSearch() {
+    var searchInput = document.getElementById("searchField");
+    searchInput.value = ""; // Clear the search field
+    toggleClearButton(); // Hide the clear button
+    searchInput.focus(); // Optional: bring focus back to the search field
+    // Optional: Add any additional logic you want to execute when search is cleared
+  }
+
+  document.getElementById("searchField").addEventListener("input", function () {
+    const searchTerm = this.value;
+    fetchAndDisplayPosts("search", searchTerm);
+  });
+
   var span = document.getElementsByClassName("close")[0];
 
   span.onclick = function () {
     document.getElementById("postModal").style.display = "none";
   };
 
-  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts);
+  document.addEventListener("DOMContentLoaded", fetchAndDisplayPosts("likes"));
 </script>
 
 <!-- STYLEEEEE -->
@@ -806,6 +904,7 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    border-radius: 5px;
   }
 
   .pmodal {
@@ -827,6 +926,7 @@
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
+    border-radius: 5px;
   }
 
   .close {
@@ -891,6 +991,10 @@
   .button-30:active {
     box-shadow: #d6d6e7 0 3px 7px inset;
     transform: translateY(2px);
+  }
+
+  .post-name {
+    color: #174ea6;
   }
 
   /* Delete icon styling */
@@ -1029,16 +1133,84 @@
   }
 
   .sort-button {
-    margin: 0 10px;
-    padding: 5px 20px;
+    align-items: center;
+    appearance: none;
+    background-color: #fff;
+    border-radius: 24px;
+    border-style: none;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 3px 5px -1px,
+      rgba(0, 0, 0, 0.14) 0 6px 10px 0, rgba(0, 0, 0, 0.12) 0 1px 18px 0;
+    box-sizing: border-box;
+    color: #3c4043;
     cursor: pointer;
-    background-color: #f0f0f0; /* Light grey background */
-    border: 1px solid #d4d4d4; /* Slightly darker border */
-    border-radius: 5px;
+    display: inline-flex;
+    fill: currentcolor;
+    font-family: "Google Sans", Roboto, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    height: 30px;
+    justify-content: center;
+    letter-spacing: 0.25px;
+    line-height: normal;
+    max-width: 100%;
+    overflow: visible;
+    padding: 2px 10px;
+    position: relative;
+    text-align: center;
+    text-transform: none;
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 80px;
+    will-change: transform, opacity;
+    z-index: 0;
   }
 
   .sort-button-active {
     background-color: #d4d4d4; /* Slightly darker to indicate active state */
+  }
+
+  .sort-button:hover {
+    background: #dbe5f8;
+    color: #174ea6;
+  }
+
+  .sort-button:active {
+    box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%),
+      0 8px 12px 6px rgb(60 64 67 / 15%);
+    outline: none;
+  }
+
+  .sort-button:focus {
+    outline: none;
+    border: 2px solid #95b7ec;
+  }
+
+  .sort-button:not(:disabled) {
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+      rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+  }
+
+  .sort-button:not(:disabled):hover {
+    box-shadow: rgba(60, 64, 67, 0.3) 0 2px 3px 0,
+      rgba(60, 64, 67, 0.15) 0 6px 10px 4px;
+  }
+
+  .sort-button:not(:disabled):focus {
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+      rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
+  }
+
+  .sort-button:not(:disabled):active {
+    box-shadow: rgba(60, 64, 67, 0.3) 0 4px 4px 0,
+      rgba(60, 64, 67, 0.15) 0 8px 12px 6px;
+  }
+
+  .sort-button:disabled {
+    box-shadow: rgba(60, 64, 67, 0.3) 0 1px 3px 0,
+      rgba(60, 64, 67, 0.15) 0 4px 8px 3px;
   }
 
   /* updown vote button */
@@ -1067,27 +1239,106 @@
   }
 
   .vote-button:hover {
-    background-color: #cccccc; /* Gray background on hover */
-    border-radius: 5px; /* Optional: rounded corners for the background */
+    background-color: #cccccc;
+    border-radius: 5px;
   }
 
   .upvote-active {
-    color: rgb(94, 196, 255); /* Change to your preferred shade of blue */
+    color: rgb(94, 196, 255);
     font-size: 35px;
   }
 
   .downvote-active {
-    color: rgb(255, 159, 223); /* Change to your preferred shade of red */
+    color: rgb(255, 159, 223);
     font-size: 35px;
   }
 
   .vote-count-up {
-    color: rgb(94, 196, 255); /* or any color you prefer for upvotes */
+    color: rgb(94, 196, 255);
     font-size: large;
   }
 
   .vote-count-down {
-    color: rgb(255, 159, 223); /* or any color you prefer for downvotes */
+    color: rgb(255, 159, 223);
     font-size: large;
+  }
+
+  .button-container {
+    background-color: #f9f9f9;
+    display: flex;
+    justify-content: flex-start; /* Aligns children (buttons) to the start of the container */
+    margin: auto;
+    width: 100%;
+    max-width: 815px; /* Match the card's max width */
+    padding: 10px 0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #cccccc; /* Adjust color and size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* horizontal offset, vertical offset, blur radius, color */
+  }
+
+  .button-container > button {
+    margin-left: 10px; /* Adjust the value as needed */
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 24px;
+    padding: 4px 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    width: fit-content;
+    position: relative;
+    left: 10px; /* Adjust the value as needed */
+  }
+
+  .search-container input[type="search"] {
+    border: none;
+    outline: none;
+    padding: 8px;
+    margin-left: 8px;
+    font-size: 16px;
+    width: 240px; /* Adjust the width as needed */
+    height: 10px;
+  }
+
+  .search-container input[type="search"]::placeholder {
+    color: #999;
+  }
+
+  .search-container input[type="search"] {
+    padding-left: 5px;
+  }
+
+  .search-container input[type="search"] {
+    border: none;
+    outline: none;
+    font-size: 16px;
+    width: 240px; /* Adjust the width as needed */
+    background-position: 1px center; /* Position the icon */
+    background-size: 16px; /* Size of the icon */
+    border-radius: 24px;
+  }
+
+  .clear-search {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    position: absolute;
+    right: 0.01px; 
+    top: 50%;
+    transform: translateY(-50%);
+    display: none; 
+    font-size: 20px;
+  }
+
+  .search-container input:not(:placeholder-shown) + .clear-search {
+    display: block;
+  }
+
+  .search-container input {
+    padding-right: 30px;
   }
 </style>
