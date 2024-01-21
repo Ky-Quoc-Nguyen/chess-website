@@ -1,7 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
-const path = require('path');
+const path = require("path");
+const fs = require('fs');
 
 
 const cors = require("cors");
@@ -10,33 +11,36 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const db = require('mssql');
+const db = require("mssql");
 
 const config = {
-  user: 'kynguyen1105',
-  password: 'Kyisagod1!',
-  server: 'chessclubdb.database.windows.net',
-  database: 'chessclubdb',
+  user: "kynguyen1105",
+  password: "Kyisagod1!",
+  server: "chessclubdb.database.windows.net",
+  database: "chessclubdb",
   options: {
-    encrypt: true, 
-    trustServerCertificate: false
-  }
+    encrypt: true,
+    trustServerCertificate: false,
+  },
 };
-var options = {
 
-  index: 'hostingstart.html'
-  
-  };
+function logMessage(message) {
+  const logFilePath = path.join(__dirname, "app.log");
+  fs.appendFileSync(logFilePath, `${new Date().toISOString()} - ${message}\n`);
+}
+var options = {
+  index: "hostingstart.html",
+};
 db.connect(config)
-  .then(pool => {
-    console.log('Connected to Azure SQL Database');
+  .then((pool) => {
+    logMessage("Connected to Azure SQL Database");
   })
-  .catch(err => {
-    console.error('Error connecting to Azure SQL: ', err);
+  .catch((err) => {
+    logMessage("Error connecting to Azure SQL: " + err.message);
   });
 
-  // Serve static files from the 'public' directory
-app.use('/', express.static('/home/site/wwwroot', options));
+// Serve static files from the 'public' directory
+app.use("/", express.static("/home/site/wwwroot", options));
 
 // // Send the user to index.html if the route is not recognized
 // app.get('*', (req, res) => {
@@ -49,16 +53,18 @@ app.use('/', express.static('/home/site/wwwroot', options));
 // });
 app.listen(process.env.PORT);
 
-
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const pool = await db.connect(config);
-    const result = await pool.request()
-      .input('username', db.VarChar, username)
-      .input('password', db.VarChar, password)
-      .query("INSERT INTO users (username, password) VALUES (@username, @password)");
+    const result = await pool
+      .request()
+      .input("username", db.VarChar, username)
+      .input("password", db.VarChar, password)
+      .query(
+        "INSERT INTO users (username, password) VALUES (@username, @password)"
+      );
 
     res.redirect("/home/site/wwwroot/hostingstart.html");
   } catch (err) {
@@ -72,8 +78,9 @@ app.post("/login", async (req, res) => {
 
   try {
     const pool = await db.connect(config);
-    const results = await pool.request()
-      .input('username', db.VarChar, username)
+    const results = await pool
+      .request()
+      .input("username", db.VarChar, username)
       .query("SELECT * FROM users WHERE username = @username");
 
     if (results.recordset.length > 0) {
@@ -100,11 +107,14 @@ app.post("/posts", async (req, res) => {
   const { title, content, author } = req.body;
   try {
     const pool = await db.connect(config);
-    const result = await pool.request()
-      .input('title', db.NVarChar, title)
-      .input('content', db.NVarChar, content)
-      .input('author', db.NVarChar, author)
-      .query('INSERT INTO posts (title, content, author) OUTPUT INSERTED.id VALUES (@title, @content, @author)');
+    const result = await pool
+      .request()
+      .input("title", db.NVarChar, title)
+      .input("content", db.NVarChar, content)
+      .input("author", db.NVarChar, author)
+      .query(
+        "INSERT INTO posts (title, content, author) OUTPUT INSERTED.id VALUES (@title, @content, @author)"
+      );
     res.json({
       success: true,
       message: "Post created",
@@ -119,21 +129,23 @@ app.post("/posts", async (req, res) => {
 app.get("/posts", async (req, res) => {
   const sort = req.query.sort;
   const search = req.query.search;
-  let sqlQuery = "SELECT id, title, content, author, created_at, like_count, dislike_count FROM posts";
+  let sqlQuery =
+    "SELECT id, title, content, author, created_at, like_count, dislike_count FROM posts";
   if (search) {
-    sqlQuery += " WHERE title LIKE '%' + @search + '%' OR content LIKE '%' + @search + '%'";
+    sqlQuery +=
+      " WHERE title LIKE '%' + @search + '%' OR content LIKE '%' + @search + '%'";
   }
-  if (sort === 'likes') {
+  if (sort === "likes") {
     // If you want to sort by net likes (likes minus dislikes), modify this line accordingly
     sqlQuery += " ORDER BY like_count DESC";
-  } else if (sort === 'recent') {
+  } else if (sort === "recent") {
     sqlQuery += " ORDER BY created_at DESC";
   }
   try {
     const pool = await db.connect(config);
     const request = pool.request();
     if (search) {
-      request.input('search', db.NVarChar, search);
+      request.input("search", db.NVarChar, search);
     }
     const result = await request.query(sqlQuery);
     res.json(result.recordset);
@@ -142,7 +154,6 @@ app.get("/posts", async (req, res) => {
     res.status(500).send("Error fetching posts");
   }
 });
-
 
 //   if (sort === 'likes') {
 //     console.log("likes")
@@ -166,8 +177,6 @@ app.get("/posts", async (req, res) => {
 //     res.json(results);
 //   });
 // });
-
-
 
 // app.get("/getComments/:postId", (req, res) => {
 //   const postId = req.params.postId;
