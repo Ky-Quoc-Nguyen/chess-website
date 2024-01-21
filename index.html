@@ -166,7 +166,7 @@ document.getElementById('registrationForm').addEventListener('submit', function(
         if (data.success) {
             // Handle successful registration
             console.log("Registration successful");
-            window.location.reload()
+            showPage('home');
             
         } else {
             alert("Registration failed: " + data.message);
