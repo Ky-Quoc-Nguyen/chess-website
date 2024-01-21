@@ -60,7 +60,7 @@ app.post("/register", async (req, res) => {
       .input('password', db.VarChar, password)
       .query("INSERT INTO users (username, password) VALUES (@username, @password)");
 
-    res.redirect("http://127.0.0.1:5500/index.html#");
+    res.redirect("/home/site/wwwroot/index.html#");
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).send("Error registering new user");
