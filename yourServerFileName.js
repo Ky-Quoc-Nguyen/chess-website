@@ -1,3 +1,4 @@
+//push date 5:33
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
@@ -229,6 +230,23 @@ app.get("/posts", async (req, res) => {
 //     }
 //   });
 // });
+
+app.delete("/deletePost/:postId", async (req, res) => {
+  const postId = req.params.postId;
+  // Assuming 'username' is used for some validation or logging
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('postId', sql.Int, postId)
+          .query('DELETE FROM posts WHERE id = @postId');
+      
+      res.send("Post deleted successfully");
+  } catch (err) {
+      console.error("Error deleting post:", err);
+      res.status(500).send("Error deleting post");
+  }
+});
 
 // //console.log(postId, voteType, username)
 // app.post("/vote", (req, res) => {
