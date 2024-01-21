@@ -193,7 +193,7 @@
       const imageUrlInput = document.getElementById("imageUrl");
       const imageUrl = imageUrlInput ? imageUrlInput.value : "";
 
-      fetch("http://localhost:3000/posts", {
+      fetch("https://cuongchessclub.azurewebsites.net/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,7 +228,7 @@
 
   function sendVote(postId, voteType, username) {
     // console.log(voteType)
-    fetch("http://localhost:3000/vote", {
+    fetch("https://cuongchessclub.azurewebsites.net/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -437,7 +437,7 @@
 
   function fetchAndDisplayPosts(sortType, searchTerm = "") {
     // Modify the fetch URL or parameters based on the sortType
-    let url = "http://localhost:3000/posts";
+    let url = "https://cuongchessclub.azurewebsites.net/posts";
     if (sortType === "recent") {
       url += "?sort=recent"; // Adjust the query as per your API requirements
     } else if (sortType === "likes") {
@@ -474,7 +474,7 @@
     document.getElementById("postModal").style.display = "block";
 
     // Fetch and display comments for the post
-    fetch(`http://localhost:3000/getComments/${post.id}`)
+    fetch(`https://cuongchessclub.azurewebsites.net/getComments/${post.id}`)
       .then((response) => response.json())
       .then((comments) => {
         const commentsList = document.getElementById("commentsList");
@@ -509,7 +509,7 @@
       const commentText = document.getElementById("newCommentText").value;
       const author = sessionStorage.getItem("username"); // Or get author name from the session
 
-      fetch("http://localhost:3000/postComment", {
+      fetch("https://cuongchessclub.azurewebsites.net/postComment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -533,7 +533,7 @@
     });
 
   function refreshComments(postId) {
-    fetch(`http://localhost:3000/getComments/${postId}`)
+    fetch(`https://cuongchessclub.azurewebsites.net/getComments/${postId}`)
       .then((response) => response.json())
       .then((comments) => {
         const commentsList = document.getElementById("commentsList");
@@ -560,7 +560,7 @@
   }
 
   function deletePost(postId) {
-    fetch(`http://localhost:3000/deletePost/${postId}`, { method: "DELETE" })
+    fetch(`https://cuongchessclub.azurewebsites.net/deletePost/${postId}`, { method: "DELETE" })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Problem deleting post");
@@ -586,7 +586,7 @@
     const voteCountSpan = document.getElementById(`vote-count-${postId}`);
     if (voteCountSpan) {
       // Re-fetch the specific post data or pass it if already available
-      fetch(`http://localhost:3000/posts/${postId}`)
+      fetch(`https://cuongchessclub.azurewebsites.net/posts/${postId}`)
         .then((response) => response.json())
         .then((post) => {
           voteCountSpan.textContent = calculateVoteDifference(post);

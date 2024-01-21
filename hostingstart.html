@@ -118,370 +118,7 @@
 </body>
 </html>
 
-<!-- Below are the styling. Adjust it to your liking. Just google it and copy whatever you like to make the website looks good  -->
-
-<style>
-body {
-    font-family: "Open Sans", sans-serif;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
-  }
-  
-  .text-column {
-    flex-basis: 50%;
-  }
-  
-  .image-column {
-    flex-basis: 50%;
-  }
-  
-  .header {
-  background-image: url('images/chess1.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; 
-  text-align: center;
-  padding: 450px 0; 
-  color: #F5F5F7;
-  position: relative;
-}
-
-.header h1 {
-  font-family: 'Serif font', Times, serif;
-  font-size: 72px; 
-  margin: 0;
-  position: absolute; 
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  /* background: rgba(0, 0, 0, 0.5);  */
-  padding: 10px 20px; 
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  */
-  border-radius: 5px; 
-}
-  
-p {
-  color: #666;
-  font-size: 20px; 
-}
-
-h2 {
-  font-size: 50px; /* Sets the font size for all <h2> tags */
-}
-  
-  @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-    .text-column,
-    .image-column {
-      flex-basis: 100%;
-    }
-  }
-
-.welcome-title {
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.navbar {
-    background-color: #39393a;
-    overflow: hidden;
-    width: 100%;
-    top: 0;
-    position: fixed; 
-    z-index: 1000; 
-    height: 40px;
-}
-
-.navbar ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center; 
-    gap: 150px;
-}
-
-.navbar li {
-    float: left;
-}
-
-.navbar li a {
-    font-family: "Open Sans", sans-serif;
-    display: block; 
-    color: #a0a0a0;
-    text-align: center;
-    font-size: 15px;
-    padding: 10px 16px;
-    text-decoration: none;
-}
-
-
-.navbar li a:hover {
-    background-color: #F5F5F7;
-    color: black;
-}
-
-.header {
-    background-image: url('images/chess1.jpeg');
-    background-size: cover;
-    background-position: center;
-    text-align: center;
-    padding: 750px 0; 
-    margin-top: 50px; 
-    color: #F5F5F7;
-    position: relative; 
-}
-
-.header h1 {
-    font-family: 'Serif font', Times, serif;
-    font-size: 100px;
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-/* Log in information box css */
-
-body {
-    font-family: "Open Sans", sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.login-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-label {
-    margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="password"] {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-#login {
-    display: none;
-}
-
-input[type="submit"] {
-    padding: 10px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-input[type="submit"]:hover {
-    background-color: #004494;
-}
-
-.new-user {
-    margin-top: 15px;
-    text-align: center;
-}
-
-.new-user a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.new-user a:hover {
-    text-decoration: underline;
-}
-.page {
-    display: none;
-}
-
-#home { /* Or whichever section you want to show first */
-    display: block;
-}
-
-/*css for contact tab*/
-body{
-  font-family: "Open Sans", sans-serif;
-  background: linear-gradient();
-}
-
-/*css for contact container class*/
-.contact-container{
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.contact-left{
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 20px;
-}
-
-.contact-left-title h2{
-  font-weight: 1000;
-  color: hsl(from color h s l);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-style: inherit;
-  margin-bottom: 5px;
-}
-
-.contact-left-title hr{
-  border: none;
-  width: 120px;
-  height: 5px;
-  background-color: hsl(hue, saturation, lightness);
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-
-.contact-left textarea{
-  height: 140px;
-  padding-top: 15px;
-  border-radius: 20px;
-}
-
-.contacts-inputs-name{
-  width: 400px;
-  height: 50px;
-  border: none;
-  outline: none;
-  padding-left: 25px;
-  font-weight: 500;
-  color: #666;
-  border-radius: 50px;
-
-
-
-}
-
-.contacts-inputs-email{
-  width: 400px;
-  height: 50px;
-  border: none;
-  outline: none;
-  padding-left: 25px;
-  font-weight: 500;
-  color: #666;
-  border-radius: 50px;
-}
-
-.contacts-inputs-message{
-  width: 400px;
-  height: 50px;
-  border: none;
-  outline: none;
-  padding-left: 25px;
-  font-weight: 500;
-  color: #666;
-  border-radius: 50px;
-}
-
-
-.contact-left button{
-  display: flex;
-  align-items: center;
-  padding: 15px 30px;
-  font-size: 16px;
-  color: rgb(255, 255, 255);
-  gap: 10px;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(270deg, rgb(71, 71, 71),rgb(116, 116, 116));
-  cursor: pointer;
-}
-
-/* CSS for nice button */
-.button-27 {
-  appearance: none;
-  background-color: #000000;
-  border: 2px solid #1A1A1A;
-  border-radius: 15px;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  display: inline-block;
-  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  font-size: 16px;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-  min-height: 60px;
-  min-width: 0;
-  outline: none;
-  padding: 16px 24px;
-  text-align: center;
-  text-decoration: none;
-  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  width: 100%;
-  will-change: transform;
-}
-
-.button-27:disabled {
-  pointer-events: none;
-}
-
-.button-27:hover {
-  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
-  transform: translateY(-2px);
-}
-
-.button-27:active {
-  box-shadow: none;
-  transform: translateY(0);
-}
-
-@media (max-width:800px){
-  .contact-inputs{
-    width: 80vw;
-  }
-
-  .contact-right{
-    display:none;
-  }
-}
-
-</style>
-
-<!-- below are the script to this html -->
-
+  <!-- below are the script to this html -->
 <script>
 function showRegistrationForm() {
     document.getElementById('loginForm').style.display = 'none';
@@ -538,3 +175,366 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         });
     });
 </script>
+
+<!-- Below are the styling. Adjust it to your liking. Just google it and copy whatever you like to make the website looks good  -->
+
+<style>
+  body {
+      font-family: "Open Sans", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px;
+    }
+    
+    .text-column {
+      flex-basis: 50%;
+    }
+    
+    .image-column {
+      flex-basis: 50%;
+    }
+    
+    .header {
+    background-image: url('images/chess1.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; 
+    text-align: center;
+    padding: 450px 0; 
+    color: #F5F5F7;
+    position: relative;
+  }
+  
+  .header h1 {
+    font-family: 'Serif font', Times, serif;
+    font-size: 72px; 
+    margin: 0;
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    /* background: rgba(0, 0, 0, 0.5);  */
+    padding: 10px 20px; 
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);  */
+    border-radius: 5px; 
+  }
+    
+  p {
+    color: #666;
+    font-size: 20px; 
+  }
+  
+  h2 {
+    font-size: 50px; /* Sets the font size for all <h2> tags */
+  }
+    
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .text-column,
+      .image-column {
+        flex-basis: 100%;
+      }
+    }
+  
+  .welcome-title {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .navbar {
+      background-color: #39393a;
+      overflow: hidden;
+      width: 100%;
+      top: 0;
+      position: fixed; 
+      z-index: 1000; 
+      height: 40px;
+  }
+  
+  .navbar ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center; 
+      gap: 150px;
+  }
+  
+  .navbar li {
+      float: left;
+  }
+  
+  .navbar li a {
+      font-family: "Open Sans", sans-serif;
+      display: block; 
+      color: #a0a0a0;
+      text-align: center;
+      font-size: 15px;
+      padding: 10px 16px;
+      text-decoration: none;
+  }
+  
+  
+  .navbar li a:hover {
+      background-color: #F5F5F7;
+      color: black;
+  }
+  
+  .header {
+      background-image: url('images/chess1.jpeg');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      padding: 750px 0; 
+      margin-top: 50px; 
+      color: #F5F5F7;
+      position: relative; 
+  }
+  
+  .header h1 {
+      font-family: 'Serif font', Times, serif;
+      font-size: 100px;
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+  
+  /* Log in information box css */
+  
+  body {
+      font-family: "Open Sans", sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+  }
+  
+  .login-container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 300px;
+  }
+  
+  form {
+      display: flex;
+      flex-direction: column;
+  }
+  
+  label {
+      margin-bottom: 5px;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+  }
+  
+  #login {
+      display: none;
+  }
+  
+  input[type="submit"] {
+      padding: 10px;
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+  }
+  
+  input[type="submit"]:hover {
+      background-color: #004494;
+  }
+  
+  .new-user {
+      margin-top: 15px;
+      text-align: center;
+  }
+  
+  .new-user a {
+      color: #007bff;
+      text-decoration: none;
+  }
+  
+  .new-user a:hover {
+      text-decoration: underline;
+  }
+  .page {
+      display: none;
+  }
+  
+  #home { /* Or whichever section you want to show first */
+      display: block;
+  }
+  
+  /*css for contact tab*/
+  body{
+    font-family: "Open Sans", sans-serif;
+    background: linear-gradient();
+  }
+  
+  /*css for contact container class*/
+  .contact-container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  
+  .contact-left{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+  }
+  
+  .contact-left-title h2{
+    font-weight: 1000;
+    color: hsl(from color h s l);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-style: inherit;
+    margin-bottom: 5px;
+  }
+  
+  .contact-left-title hr{
+    border: none;
+    width: 120px;
+    height: 5px;
+    background-color: hsl(hue, saturation, lightness);
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  
+  .contact-left textarea{
+    height: 140px;
+    padding-top: 15px;
+    border-radius: 20px;
+  }
+  
+  .contacts-inputs-name{
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 25px;
+    font-weight: 500;
+    color: #666;
+    border-radius: 50px;
+  
+  
+  
+  }
+  
+  .contacts-inputs-email{
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 25px;
+    font-weight: 500;
+    color: #666;
+    border-radius: 50px;
+  }
+  
+  .contacts-inputs-message{
+    width: 400px;
+    height: 50px;
+    border: none;
+    outline: none;
+    padding-left: 25px;
+    font-weight: 500;
+    color: #666;
+    border-radius: 50px;
+  }
+  
+  
+  .contact-left button{
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    font-size: 16px;
+    color: rgb(255, 255, 255);
+    gap: 10px;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(270deg, rgb(71, 71, 71),rgb(116, 116, 116));
+    cursor: pointer;
+  }
+  
+  /* CSS for nice button */
+  .button-27 {
+    appearance: none;
+    background-color: #000000;
+    border: 2px solid #1A1A1A;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-height: 60px;
+    min-width: 0;
+    outline: none;
+    padding: 16px 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    will-change: transform;
+  }
+  
+  .button-27:disabled {
+    pointer-events: none;
+  }
+  
+  .button-27:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+    transform: translateY(-2px);
+  }
+  
+  .button-27:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+  
+  @media (max-width:800px){
+    .contact-inputs{
+      width: 80vw;
+    }
+  
+    .contact-right{
+      display:none;
+    }
+  }
+  
+  </style>
+  

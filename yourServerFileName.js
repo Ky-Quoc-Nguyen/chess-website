@@ -55,7 +55,7 @@ app.listen(process.env.PORT);
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
-
+  logMessage("Registered USER");
   try {
     const pool = await db.connect(config);
     const result = await pool
@@ -66,7 +66,7 @@ app.post("/register", async (req, res) => {
         "INSERT INTO users (username, password) VALUES (@username, @password)"
       );
 
-    res.redirect("/home/site/wwwroot/hostingstart.html");
+    res.redirect("hostingstart.html");
   } catch (err) {
     console.error("Database error:", err);
     res.status(500).send("Error registering new user");
