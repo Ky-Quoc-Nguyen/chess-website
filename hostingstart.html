@@ -103,7 +103,7 @@
         </form>
 
         <!-- Registration Form -->
-        <form action="https://cuongchessclub.azurewebsites.net/" method="post" id="registrationForm" style="display:none;">
+        <form action="https://cuongchessclub.azurewebsites.net/#" method="post" id="registrationForm" style="display:none;">
           <label for="newUsername">Username:</label><br>
           <input type="text" id="newUsername" name="username" required><br>
 
@@ -517,7 +517,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         event.preventDefault();
 
         const formData = new FormData(this);
-        fetch('http://localhost:3000/login', {
+        fetch('https://cuongchessclub.azurewebsites.net/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
