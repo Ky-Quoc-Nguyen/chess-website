@@ -65,11 +65,20 @@ app.post("/register", async (req, res) => {
       .query(
         "INSERT INTO users (username, password) VALUES (@username, @password)"
       );
+      res.json({
+        success: true,
+        message: "User registered successfully"
+    });
+    logMessage("Registered USER GOOD");
+
 
     res.redirect("hostingstart.html");
   } catch (err) {
-    console.error("Database error:", err);
-    res.status(500).send("Error registering new user");
+    logMessage("Registered USER ERRROR");
+    res.status(500).json({
+      success: false,
+      message: "Error registering new user"
+  });
   }
 });
 

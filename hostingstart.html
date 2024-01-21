@@ -103,7 +103,7 @@
         </form>
 
         <!-- Registration Form -->
-        <form action="https://cuongchessclub.azurewebsites.net/#" method="post" id="registrationForm" style="display:none;">
+        <form method="post" id="registrationForm" style="display:none;">
           <label for="newUsername">Username:</label><br>
           <input type="text" id="newUsername" name="username" required><br>
 
@@ -149,6 +149,32 @@ function showPage(pageId) {
         console.error('No page found with ID:', pageId);
     }
 }
+
+document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    fetch('https://cuongchessclub.azurewebsites.net/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Object.fromEntries(formData))
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Handle successful registration
+            alert("Registration successful");
+        } else {
+            alert("Registration failed: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
