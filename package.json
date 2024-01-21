@@ -7,4 +7,8 @@
     "mssql": "^10.0.2",
     "mysql": "^2.18.1"
   }
+  ,
+  "scripts": {
+    "start": "node yourServerFileName.js"
+  }
 }

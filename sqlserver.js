@@ -1,7 +1,8 @@
 const express = require("express");
-const mysql = require("mssql");
 const bodyParser = require("body-parser");
 const app = express();
+const path = require('path');
+
 
 const cors = require("cors");
 app.use(cors());
@@ -29,6 +30,19 @@ db.connect(config)
   .catch(err => {
     console.error('Error connecting to Azure SQL: ', err);
   });
+
+  // Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Send the user to index.html if the route is not recognized
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
 app.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -249,6 +263,6 @@ app.get("/posts", async (req, res) => {
 //   });
 // });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+// app.listen(3000, () => {
+//   console.log("Server running on port 3000");
+// });
