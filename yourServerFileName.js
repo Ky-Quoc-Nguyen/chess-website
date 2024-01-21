@@ -145,7 +145,6 @@ app.get("/posts", async (req, res) => {
       " WHERE title LIKE '%' + @search + '%' OR content LIKE '%' + @search + '%'";
   }
   if (sort === "likes") {
-    // If you want to sort by net likes (likes minus dislikes), modify this line accordingly
     sqlQuery += " ORDER BY like_count DESC";
   } else if (sort === "recent") {
     sqlQuery += " ORDER BY created_at DESC";
