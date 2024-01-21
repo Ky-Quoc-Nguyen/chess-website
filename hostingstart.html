@@ -1,4 +1,4 @@
-<!-- Main html code -->
+<!-- Main html HOSTING code -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -164,9 +164,11 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Handle successful registration
-            console.log("Registration successful");
-            window.location.reload()
+            // Alert the user about successful registration
+            alert("Registration successful!");
+
+            // After the alert, redirect to the home page
+            showPage('home');
             
         } else {
             alert("Registration failed: " + data.message);
