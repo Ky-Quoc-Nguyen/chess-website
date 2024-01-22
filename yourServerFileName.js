@@ -146,9 +146,9 @@ app.get("/posts", async (req, res) => {
       " WHERE title LIKE '%' + @search + '%' OR content LIKE '%' + @search + '%'";
   }
   if (sort === "likes") {
-    sqlQuery += " ORDER BY like_count DESC";
+    sqlQuery += " ORDER BY like_count ASC";
   } else if (sort === "recent") {
-    sqlQuery += " ORDER BY created_at DESC";
+    sqlQuery += " ORDER BY created_at ASC";
   }
   try {
     const pool = await db.connect(config);
@@ -233,15 +233,19 @@ app.get("/posts", async (req, res) => {
 
 app.delete("/deletePost/:postId", async (req, res) => {
   const postId = req.params.postId;
-  // Assuming 'username' is used for some validation or logging
+  console.log("Deleting post with ID:", postId);
 
   try {
-      const pool = await sql.connect(config);
-      await pool.request()
-          .input('postId', sql.Int, postId)
+      const pool = await db.connect(config);
+      const result = await pool.request()
+          .input('postId', sql.Int, postId) 
           .query('DELETE FROM posts WHERE id = @postId');
-      
-      res.send("Post deleted successfully");
+
+      if (result.rowsAffected[0] > 0) {
+          res.send("Post deleted successfully");
+      } else {
+          res.status(404).send("Post not found");
+      }
   } catch (err) {
       console.error("Error deleting post:", err);
       res.status(500).send("Error deleting post");
